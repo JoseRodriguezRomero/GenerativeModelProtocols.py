@@ -10,11 +10,16 @@ from .generative_adversarial_network import default_generative_adversarial_netwo
 from .gaussian_mixture_model import default_gaussian_mixture_model
 from .normalizing_flow import default_normalizing_flow
 from .diffusion_model import default_diffusion_model
+from .auxiliary.tabular_denoiser import default_tabular_denoiser
 
 from .variational_autoencoder import VariationalAutoencoder
+from .generative_adversarial_network import GenerativeAdversarialNetwork
+from .gaussian_mixture_model import GaussianMixtureModel
 from .normalizing_flow import NormalizingFlow
+from .diffusion_model import DiffusionModel
+from .auxiliary.tabular_denoiser import TabularDenoiser
 
-from auxiliary.lux import Dense, Chain, ActivationFunction
+from .auxiliary.lux import Dense, Chain, ActivationFunction
 
 
 def load_differential_equations():
@@ -46,12 +51,21 @@ def load_distribution_distance_extension():
     jl.seval("using OptimalTransport")
 
 
+def load_save_load_exension():
+    jl.seval("using FileIO")
+    jl.seval("using HDF5")
+
+
 __all__ = [
     "AbstractGenerativeModel",
 
     # constructors
     "VariationalAutoencoder",
+    "GenerativeAdversarialNetwork",
+    "GaussianMixtureModel",
     "NormalizingFlow",
+    "DiffusionModel",
+    "TabularDenoiser",
 
     # convenience constructors
     "default_variational_autoencoder", 
@@ -59,6 +73,7 @@ __all__ = [
     "default_gaussian_mixture_model",
     "default_normalizing_flow",
     "default_diffusion_model",
+    "default_tabular_denoiser",
 
     # dependency loaders
     "load_differential_equations",
@@ -67,10 +82,11 @@ __all__ = [
     "load_reactant_gpu",
     "load_reactant_cuda",
     "load_distribution_distance_extension",
+    "load_save_load_exension",
 
     # lux components
     "Dense",
     "Chain",
-    "ActivationFunction"
+    "ActivationFunction",
 ]
 
