@@ -1,0 +1,11 @@
+# VS Code
+.vscode/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Package build artifacts
+*.egg-info/
+build/
+dist/
