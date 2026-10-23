@@ -1,4 +1,4 @@
- [!CAUTION]
+> [!CAUTION]
 > This module is at a very early development stage and by no means ready for general users.
 
 # GenerativeModelProtocols.py
