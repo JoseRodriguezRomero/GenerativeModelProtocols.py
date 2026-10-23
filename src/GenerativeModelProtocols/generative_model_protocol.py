@@ -1,3 +1,6 @@
+import io
+from contextlib import redirect_stdout
+
 from juliacall import Main as jl
 
 
@@ -6,12 +9,13 @@ class AbstractGenerativeModel:
         self._jl_model = _jl_model
 
     def __repr__(self):
-        jl.display(self._jl_model)
-        return ""
+        output = io.StringIO()
+        with redirect_stdout(output):
+            jl.display(self._jl_model)
+        return output.getvalue().rstrip()
 
     def __str__(self):
-            jl.display(self._jl_model)
-            return ""
+        return self.__repr__()
 
 
 # class GenerativeModelProtocol:

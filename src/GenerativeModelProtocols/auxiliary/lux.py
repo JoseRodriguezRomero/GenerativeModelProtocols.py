@@ -1,3 +1,6 @@
+import io
+from contextlib import redirect_stdout
+
 from enum import Enum
 from juliacall import Main as jl
 
@@ -25,10 +28,13 @@ class Dense:
         )
 
     def __repr__(self):
-        return str(self._jl_dense)
-
+        output = io.StringIO()
+        with redirect_stdout(output):
+            jl.display(self._jl_dense)
+        return output.getvalue().rstrip()
+    
     def __str__(self):
-        return repr(self)
+        return self.__repr__()
 
 
 class Chain:
@@ -44,8 +50,11 @@ class Chain:
         self._jl_chain = jl.Lux.Chain(*julia_layers)
 
     def __repr__(self):
-        return str(self._jl_chain)
-
+        output = io.StringIO()
+        with redirect_stdout(output):
+            jl.display(self._jl_chain)
+        return output.getvalue().rstrip()
+        
     def __str__(self):
-        return repr(self._jl_chain)
+        return self.__repr__()
 

@@ -11,7 +11,7 @@ class TabularDenoiser:
         time_projection_layers: tuple[Dense, ...] = None,
         output_projection: Dense = None,
         max_period: float = 10000.0,
-        _jl_denoiser=None,
+        _jl_denoiser = None,
     ):
         self = super().__new__(cls)
 
