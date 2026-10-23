@@ -1,3 +1,6 @@
+ [!CAUTION]
+> This module is at a very early development stage and by no means ready for general users.
+
 # GenerativeModelProtocols.py
 
 A small Python bridge to [`GenerativeModelProtocols.jl`](https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.jl)
