@@ -1,18 +1,12 @@
-import io
-from contextlib import redirect_stdout
-
 from juliacall import Main as jl
-
+from .auxiliary.capture_julia_display import capture_julia_display
 
 class AbstractGenerativeModel:
     def __init__(self, _jl_model):
         self._jl_model = _jl_model
 
     def __repr__(self):
-        output = io.StringIO()
-        with redirect_stdout(output):
-            jl.display(self._jl_model)
-        return output.getvalue().rstrip()
+        return capture_julia_display(self._jl_model)
 
     def __str__(self):
         return self.__repr__()

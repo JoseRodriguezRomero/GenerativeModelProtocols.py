@@ -4,6 +4,8 @@ from .generative_model_protocol import AbstractGenerativeModel
 
 
 class NormalizingFlow(AbstractGenerativeModel):
+    __module__ = "GenerativeModelProtocols"
+
     def __init__(
             self, 
             velocity_field: Chain = None,
@@ -14,9 +16,13 @@ class NormalizingFlow(AbstractGenerativeModel):
         else:
             super().__init__(
                 jl.GenerativeModelProtocols.NormalizingFlow(
-                    velocity_field=velocity_field._jl_chain
+                    velocity_field = velocity_field._jl_chain
                 )
             )
+
+    @property
+    def velocity_field(self) -> Chain:
+        return Chain(_jl_chain = self._jl_model.velocity_field)
 
 
 def default_normalizing_flow(dimensions: int):

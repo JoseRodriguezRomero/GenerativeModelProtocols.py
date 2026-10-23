@@ -2,7 +2,7 @@ import unittest
 import GenerativeModelProtocols as gen_prot
 
 
-def test_default_vae():
+def default_variational_autoencoder_test():
     encoders = (
         gen_prot.Chain(
             gen_prot.Dense(2, 5, gen_prot.ActivationFunction.RELU),
@@ -33,13 +33,25 @@ def test_default_vae():
 
 class TestVariationalAutoencoder(unittest.TestCase):
     def test_constructor(self):
-        model = test_default_vae()
+        model = default_variational_autoencoder_test()
         self.assertIsNotNone(model)
 
         model = gen_prot.default_variational_autoencoder(2, 2, 3)
         self.assertIsNotNone(model)
 
     def test_printing(self):
-        print(test_default_vae())
-        self.assertEqual(True, True)
+        self.assertIsNone(print(default_variational_autoencoder_test()))
+        self.assertTrue(len(str(default_variational_autoencoder_test)) > 0)
 
+    def test_getters(self):
+        model = default_variational_autoencoder_test()
+
+        self.assertIsInstance(model.encoders, tuple)
+        self.assertTrue(
+            all(isinstance(encoder, gen_prot.Chain) for encoder in model.encoders)
+        )
+
+        self.assertIsInstance(model.decoders, tuple)
+        self.assertTrue(
+            all(isinstance(decoder, gen_prot.Chain) for decoder in model.decoders)
+        )

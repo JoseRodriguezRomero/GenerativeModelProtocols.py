@@ -1,7 +1,10 @@
 from juliacall import Main as jl
 from .lux import Chain, Dense
+from .capture_julia_display import capture_julia_display
 
 class TabularDenoiser:
+    __module__ = "GenerativeModelProtocols.Auxiliary"
+
     def __new__(
         cls,
         T: int = None,
@@ -38,13 +41,51 @@ class TabularDenoiser:
 
         return self
 
-    def __repr__(self):
-        jl.display(self._jl_denoiser)
-        return ""
+    @property
+    def T(self) -> int:
+        return self._jl_denoiser.T
 
+    @property
+    def time_embedding_mlp(self) -> Chain:
+        return Chain(_jl_chain = self._jl_denoiser.time_embedding_mlp)
+
+    @property
+    def input_projection(self) -> Dense:
+        return Dense(_jl_dense = self._jl_denoiser.input_projection)
+
+    @property
+    def residual_layers(self) -> Dense:
+        return Dense(_jl_dense = self._jl_denoiser.residual_layers)
+
+    @property
+    def residual_layers(self) -> tuple[Dense, ...]:
+        layers = self._jl_denoiser.residual_layers
+        return tuple(
+            Dense(_jl_dense=getattr(layers, str(name)))
+            for name in jl.propertynames(layers)
+        )
+
+    @property
+    def time_projection_layers(self) -> tuple[Dense, ...]:
+        layers = self._jl_denoiser.time_projection_layers
+        return tuple(
+            Dense(_jl_dense=getattr(layers, str(name)))
+            for name in jl.propertynames(layers)
+        )
+
+    @property
+    def output_projection(self) -> Dense:
+        return Dense(_jl_dense=self._jl_denoiser.output_projection)
+
+    @property
+    def max_period(self) -> float:
+        return self._jl_denoiser.max_period
+
+    def __repr__(self):
+        return capture_julia_display(self._jl_denoiser)
+    
     def __str__(self):
-        jl.display(self._jl_denoiser)
-        return ""
+        return self.__repr__()
 
 
 def default_tabular_denoiser(

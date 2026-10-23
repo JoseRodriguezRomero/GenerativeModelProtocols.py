@@ -12,6 +12,6 @@ class TestDense(unittest.TestCase):
         self.assertIsNotNone(layer)
 
     def test_printing(self):
-        print(make_default_test_layer(), flush=True)
-        self.assertTrue(True)
+        self.assertIsNone(print(make_default_test_layer()))
+        self.assertTrue(len(str(make_default_test_layer())) > 0)
 

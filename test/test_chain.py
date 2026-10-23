@@ -16,6 +16,6 @@ class TestChain(unittest.TestCase):
         self.assertIsNotNone(chain)
 
     def test_printing(self):
-        print(make_default_test_chain())
-        self.assertEqual(True, True)
+        self.assertIsNone(print(make_default_test_chain()))
+        self.assertTrue(len(str(make_default_test_chain())) > 0)
 

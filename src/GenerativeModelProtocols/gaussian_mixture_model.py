@@ -5,6 +5,8 @@ from .generative_model_protocol import AbstractGenerativeModel
 
 
 class GaussianMixtureModel(AbstractGenerativeModel):
+    __module__ = "GenerativeModelProtocols"
+
     def __init__(
         self,
         log_variance: np.ndarray = None,
@@ -26,6 +28,22 @@ class GaussianMixtureModel(AbstractGenerativeModel):
                     }
                 )
             )
+
+    @property
+    def log_variance(self) -> np.ndarray:
+        return np.asarray(getattr(self._jl_model, "log_σ²"))
+
+    @property
+    def means(self) -> np.ndarray:
+        return np.asarray(getattr(self._jl_model, "μ"))
+
+    @property
+    def predictor_network(self) -> Chain:
+        return Chain(_jl_chain = self._jl_model.predictor_network)
+
+    @property
+    def weights(self) -> np.ndarray:
+        return np.asarray(self._jl_model.p)
 
 
 def default_gaussian_mixture_model(dimensions: int, k: int):

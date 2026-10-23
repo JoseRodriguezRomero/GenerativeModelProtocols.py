@@ -3,7 +3,7 @@ import numpy as np
 import GenerativeModelProtocols as gen_prot
 
 
-def test_default_gaussian_mixture_model():
+def default_gaussian_mixture_model_test():
     return gen_prot.GaussianMixtureModel(
         log_variance = np.zeros((2, 2)),
         means = np.zeros((2, 2)),
@@ -18,14 +18,21 @@ def test_default_gaussian_mixture_model():
 
 class TestGaussianMixtureModel(unittest.TestCase):
     def test_constructor(self):
-        model = test_default_gaussian_mixture_model()
+        model = default_gaussian_mixture_model_test()
         self.assertIsNotNone(model)
 
         model = gen_prot.default_gaussian_mixture_model(2, 2)
         self.assertIsNotNone(model)
 
     def test_printing(self):
-        print(test_default_gaussian_mixture_model())
-        self.assertEqual(True, True)
+        self.assertIsNone(print(default_gaussian_mixture_model_test()))
+        self.assertTrue(len(str(default_gaussian_mixture_model_test())) > 0)
 
+    def test_getters(self):
+        model = default_gaussian_mixture_model_test()
+
+        self.assertIsInstance(model.log_variance, np.ndarray)
+        self.assertIsInstance(model.means, np.ndarray)
+        self.assertIsInstance(model.predictor_network, gen_prot.Chain)
+        self.assertIsInstance(model.weights, np.ndarray)
 

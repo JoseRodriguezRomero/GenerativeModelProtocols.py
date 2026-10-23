@@ -2,7 +2,7 @@ import unittest
 import GenerativeModelProtocols as gen_prot
 
 
-def test_default_tabular_denoiser():
+def default_tabular_denoiser_test():
     return gen_prot.TabularDenoiser(
         T=4,
         time_embedding_mlp=gen_prot.Chain(
@@ -24,13 +24,30 @@ def test_default_tabular_denoiser():
 
 class TestTabularDenoiser(unittest.TestCase):
     def test_constructor(self):
-        model = test_default_tabular_denoiser()
+        model = default_tabular_denoiser_test()
         self.assertIsNotNone(model)
 
         model = gen_prot.default_tabular_denoiser(2)
         self.assertIsNotNone(model)
 
     def test_printing(self):
-        print(test_default_tabular_denoiser())
-        self.assertEqual(True, True)
+        self.assertIsNone(print(default_tabular_denoiser_test()))
+        self.assertTrue(len(str(default_tabular_denoiser_test())) > 0)
+
+    def test_getters(self):
+        model = default_tabular_denoiser_test()
+
+        self.assertIsInstance(model.T, int)
+        self.assertIsInstance(model.time_embedding_mlp, gen_prot.Chain)
+        self.assertIsInstance(model.input_projection, gen_prot.Dense)
+        self.assertIsInstance(model.residual_layers, tuple)
+        self.assertTrue(
+            all(isinstance(layer, gen_prot.Dense) for layer in model.residual_layers)
+        )
+        self.assertIsInstance(model.time_projection_layers, tuple)
+        self.assertTrue(
+            all(isinstance(layer, gen_prot.Dense) for layer in model.time_projection_layers)
+        )
+        self.assertIsInstance(model.output_projection, gen_prot.Dense)
+        self.assertIsInstance(model.max_period, float)
 
