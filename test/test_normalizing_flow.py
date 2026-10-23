@@ -18,11 +18,8 @@ def default_normalizing_flow_test():
 
 class TestNormalizingFlow(unittest.TestCase):
     def test_constructor(self):
-        model = default_normalizing_flow_test()
-        self.assertIsNotNone(model)
-
-        model = gen_prot.default_normalizing_flow(2)
-        self.assertIsNotNone(model)
+        self.assertIsInstance(default_normalizing_flow_test(), gen_prot.NormalizingFlow)
+        self.assertIsInstance(gen_prot.default_normalizing_flow(2), gen_prot.NormalizingFlow)
 
     def test_printing(self):
         self.assertIsNone(print(default_normalizing_flow_test()))
@@ -30,6 +27,5 @@ class TestNormalizingFlow(unittest.TestCase):
 
     def test_getters(self):
         model = default_normalizing_flow_test()
-
         self.assertIsInstance(model.velocity_field, gen_prot.Chain)
 

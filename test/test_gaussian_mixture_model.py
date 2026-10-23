@@ -18,11 +18,8 @@ def default_gaussian_mixture_model_test():
 
 class TestGaussianMixtureModel(unittest.TestCase):
     def test_constructor(self):
-        model = default_gaussian_mixture_model_test()
-        self.assertIsNotNone(model)
-
-        model = gen_prot.default_gaussian_mixture_model(2, 2)
-        self.assertIsNotNone(model)
+        self.assertIsInstance(default_gaussian_mixture_model_test(), gen_prot.GaussianMixtureModel)
+        self.assertIsInstance(gen_prot.default_gaussian_mixture_model(2, 2), gen_prot.GaussianMixtureModel)
 
     def test_printing(self):
         self.assertIsNone(print(default_gaussian_mixture_model_test()))
@@ -30,7 +27,6 @@ class TestGaussianMixtureModel(unittest.TestCase):
 
     def test_getters(self):
         model = default_gaussian_mixture_model_test()
-
         self.assertIsInstance(model.log_variance, np.ndarray)
         self.assertIsInstance(model.means, np.ndarray)
         self.assertIsInstance(model.predictor_network, gen_prot.Chain)

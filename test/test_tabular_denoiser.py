@@ -24,11 +24,8 @@ def default_tabular_denoiser_test():
 
 class TestTabularDenoiser(unittest.TestCase):
     def test_constructor(self):
-        model = default_tabular_denoiser_test()
-        self.assertIsNotNone(model)
-
-        model = gen_prot.default_tabular_denoiser(2)
-        self.assertIsNotNone(model)
+        self.assertIsInstance(default_tabular_denoiser_test(), gen_prot.TabularDenoiser)
+        self.assertIsInstance(gen_prot.default_tabular_denoiser(2), gen_prot.TabularDenoiser)
 
     def test_printing(self):
         self.assertIsNone(print(default_tabular_denoiser_test()))
@@ -36,7 +33,6 @@ class TestTabularDenoiser(unittest.TestCase):
 
     def test_getters(self):
         model = default_tabular_denoiser_test()
-
         self.assertIsInstance(model.T, int)
         self.assertIsInstance(model.time_embedding_mlp, gen_prot.Chain)
         self.assertIsInstance(model.input_projection, gen_prot.Dense)

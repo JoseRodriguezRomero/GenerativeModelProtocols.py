@@ -21,11 +21,8 @@ def default_generative_adversarial_network_test():
 
 class TestGenerativeAdversarialNetwork(unittest.TestCase):
     def test_constructor(self):
-        model = default_generative_adversarial_network_test()
-        self.assertIsNotNone(model)
-
-        model = gen_prot.default_generative_adversarial_network(2, 2, 2)
-        self.assertIsNotNone(model)
+        self.assertIsInstance(default_generative_adversarial_network_test(), gen_prot.GenerativeAdversarialNetwork)
+        self.assertIsInstance(gen_prot.default_generative_adversarial_network(2, 2, 2), gen_prot.GenerativeAdversarialNetwork)
 
     def test_printing(self):
         self.assertIsNone(print(default_generative_adversarial_network_test()))
@@ -33,6 +30,5 @@ class TestGenerativeAdversarialNetwork(unittest.TestCase):
 
     def test_getters(self):
         model = default_generative_adversarial_network_test()
-
         self.assertIsInstance(model.discriminator, gen_prot.Chain)
         self.assertIsInstance(model.vae_model, gen_prot.VariationalAutoencoder)

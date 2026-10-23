@@ -33,11 +33,8 @@ def default_variational_autoencoder_test():
 
 class TestVariationalAutoencoder(unittest.TestCase):
     def test_constructor(self):
-        model = default_variational_autoencoder_test()
-        self.assertIsNotNone(model)
-
-        model = gen_prot.default_variational_autoencoder(2, 2, 3)
-        self.assertIsNotNone(model)
+        self.assertIsInstance(default_variational_autoencoder_test(), gen_prot.VariationalAutoencoder)
+        self.assertIsInstance(gen_prot.default_variational_autoencoder(2, 2, 3), gen_prot.VariationalAutoencoder)
 
     def test_printing(self):
         self.assertIsNone(print(default_variational_autoencoder_test()))
@@ -45,12 +42,10 @@ class TestVariationalAutoencoder(unittest.TestCase):
 
     def test_getters(self):
         model = default_variational_autoencoder_test()
-
         self.assertIsInstance(model.encoders, tuple)
         self.assertTrue(
             all(isinstance(encoder, gen_prot.Chain) for encoder in model.encoders)
         )
-
         self.assertIsInstance(model.decoders, tuple)
         self.assertTrue(
             all(isinstance(decoder, gen_prot.Chain) for decoder in model.decoders)
