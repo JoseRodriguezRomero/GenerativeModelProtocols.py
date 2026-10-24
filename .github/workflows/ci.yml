@@ -49,7 +49,7 @@ jobs:
           julia --project=ci-env -e '
             using Pkg
 
-            Pkg.Registry.add("General"; force=true)
+            Pkg.Registry.add(Pkg.RegistrySpec(name="General"))
             Pkg.develop(path="GenerativeModelProtocols.jl")
 
             Pkg.add([
@@ -61,7 +61,6 @@ jobs:
               "Tulip"
             ])
 
-            Pkg.resolve()
             Pkg.instantiate()
             Pkg.precompile()
           '
