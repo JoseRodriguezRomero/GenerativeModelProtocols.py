@@ -91,6 +91,8 @@ jobs:
 
       - name: Run Python tests
         env:
+          PYTHONUTF8: "1"
+          PYTHONIOENCODING: "utf-8"
           PYTHON_JULIACALL_EXE: "julia"
           PYTHON_JULIACALL_PROJECT: "${{ github.workspace }}/ci-env"
           PYTHON_JULIAPKG_OFFLINE: "yes"
