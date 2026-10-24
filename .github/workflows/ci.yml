@@ -2,11 +2,8 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   test:
@@ -23,7 +20,7 @@ jobs:
 
     steps:
       - name: Check out Python bindings
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -33,7 +30,10 @@ jobs:
       - name: Set up Julia
         uses: julia-actions/setup-julia@v3
         with:
-          version: "1"
+          version: "1.13"
+
+      - name: Cache Julia packages
+        uses: julia-actions/cache@v3
 
       - name: Install Python package and dependencies
         run: python -m pip install .
@@ -43,13 +43,15 @@ jobs:
         run: git clone --depth 1 --branch main https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.jl.git GenerativeModelProtocols.jl
         shell: bash
 
-      - name: Install Julia package and dependencies
+      - name: Resolve and install Julia dependencies
         shell: bash
         run: |
-          julia --project=ci-env -e '
+          julia --color=yes -e '
             using Pkg
 
-            Pkg.Registry.add(Pkg.RegistrySpec(name="General"))
+            Pkg.Registry.add("General")
+            Pkg.activate("ci-env")
+
             Pkg.develop(path="GenerativeModelProtocols.jl")
 
             Pkg.add([
@@ -61,6 +63,11 @@ jobs:
               "Tulip"
             ])
 
+            if isfile("ci-env/Manifest.toml")
+              rm("ci-env/Manifest.toml")
+            end
+
+            Pkg.resolve()
             Pkg.instantiate()
             Pkg.precompile()
           '
