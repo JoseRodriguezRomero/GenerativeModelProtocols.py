@@ -1,5 +1,9 @@
 import unittest
+import numpy as np
 import GenerativeModelProtocols as gen_prot
+
+from auxiliary_tests import print_model_test_assert
+from auxiliary_tests import model_train_test
 
 
 def default_variational_autoencoder_test():
@@ -37,8 +41,7 @@ class TestVariationalAutoencoder(unittest.TestCase):
         self.assertIsInstance(gen_prot.default_variational_autoencoder(2, 2, 3), gen_prot.VariationalAutoencoder)
 
     def test_printing(self):
-        self.assertIsNone(print(default_variational_autoencoder_test()))
-        self.assertTrue(len(str(default_variational_autoencoder_test)) > 0)
+        print_model_test_assert(self, default_variational_autoencoder_test())
 
     def test_getters(self):
         model = default_variational_autoencoder_test()
@@ -51,8 +54,17 @@ class TestVariationalAutoencoder(unittest.TestCase):
             all(isinstance(decoder, gen_prot.Chain) for decoder in model.decoders)
         )
 
+        protocol = gen_prot.GenerativeModelProtocol(model = model)
+        self.assertIsInstance(protocol.input_size, int)
+        self.assertIsInstance(protocol.latent_size, int)
+        self.assertIsInstance(protocol.normalize_data, bool)
+        self.assertIsInstance(protocol.training_data, np.ndarray)
+
     def test_reassign(self):
         model = default_variational_autoencoder_test()
         with self.assertRaises(BaseException):
             model._jl_model = 0
+
+    def test_train(self):
+        model_train_test(self, gen_prot.default_variational_autoencoder(2, 2, 2), beta = 0.2)
 

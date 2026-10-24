@@ -4,7 +4,6 @@ jl.seval("using GenerativeModelProtocols")
 jl.seval("using Optimisers")
 jl.seval("using Lux")
 
-from .generative_model_protocol import AbstractGenerativeModel
 from .variational_autoencoder import default_variational_autoencoder
 from .generative_adversarial_network import default_generative_adversarial_network
 from .gaussian_mixture_model import default_gaussian_mixture_model
@@ -18,6 +17,7 @@ from .gaussian_mixture_model import GaussianMixtureModel
 from .normalizing_flow import NormalizingFlow
 from .diffusion_model import DiffusionModel
 from .auxiliary.tabular_denoiser import TabularDenoiser
+from .generative_model_protocol import GenerativeModelProtocol
 
 from .auxiliary.lux import Dense, Chain, ActivationFunction
 
@@ -57,8 +57,6 @@ def load_save_load_exension():
 
 
 __all__ = [
-    "AbstractGenerativeModel",
-
     # constructors
     "VariationalAutoencoder",
     "GenerativeAdversarialNetwork",
@@ -66,6 +64,7 @@ __all__ = [
     "NormalizingFlow",
     "DiffusionModel",
     "TabularDenoiser",
+    "GenerativeModelProtocol",
 
     # convenience constructors
     "default_variational_autoencoder", 

@@ -21,8 +21,8 @@ class GaussianMixtureModel(AbstractGenerativeModel):
         else:
             self._jl_model =  jl.GenerativeModelProtocols.GaussianMixtureModel(
                 **{
-                    "log_σ²": jl.Array(log_variance),
-                    "μ": jl.Array(means),
+                    "log_σ²": jl.Matrix(log_variance),
+                    "μ": jl.Matrix(means),
                     "predictor_network": predictor_network._jl_chain,
                     "p": jl.Vector(weights),
                 }
