@@ -38,12 +38,12 @@ jobs:
       - name: Install Python package and dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install "juliapkg>=0.1.10" juliacall
+          python -m pip install "juliapkg>=0.1.10" juliacall coverage
           python -m pip install .
         shell: bash
 
       - name: Clone Julia package
-        run: git clone --depth 1 --branch main https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.jl.git GenerativeModelProtocols.jl
+        run: git clone --depth 1 --branch main https://github.com GenerativeModelProtocols.jl
         shell: bash
 
       - name: Resolve Julia package manifest
@@ -89,7 +89,7 @@ jobs:
 
           Pkg.instantiate()
 
-      - name: Run Python tests
+      - name: Run Python tests with Coverage
         env:
           PYTHONUTF8: "1"
           PYTHONIOENCODING: "utf-8"
@@ -97,6 +97,14 @@ jobs:
           PYTHON_JULIACALL_PROJECT: "${{ github.workspace }}/ci-env"
           PYTHON_JULIAPKG_OFFLINE: "yes"
           JULIA_PROJECT: "${{ github.workspace }}/ci-env"
-        run: python test/tests.py -v -s
+        run: |
+          coverage run --source=src/GenerativeModelProtocols test/tests.py -v -s
+          coverage xml
         shell: bash
 
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          fail_ci_if_error: true
