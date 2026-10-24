@@ -43,7 +43,7 @@ jobs:
         shell: bash
 
       - name: Clone Julia package
-        run: git clone --depth 1 --branch main https://github.com/GenerativeModelProtocols.jl
+        run: git clone --depth 1 --branch main https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.jl
         shell: bash
 
       - name: Resolve Julia package manifest
