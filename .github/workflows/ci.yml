@@ -44,13 +44,15 @@ jobs:
         shell: bash
 
       - name: Install Julia package and dependencies
+        shell: bash
         run: |
           julia --project=ci-env -e '
             using Pkg
 
-            Pkg.activate("ci-env")
+            Pkg.Registry.add("General")
             Pkg.develop(path="GenerativeModelProtocols.jl")
 
+            Pkg.add("SpecialFunctions")
             Pkg.add([
               "Reactant",
               "FileIO",
@@ -63,7 +65,6 @@ jobs:
             Pkg.instantiate()
             Pkg.precompile()
           '
-        shell: bash
 
       - name: Run Python tests
         run: python -m unittest discover -s tests -p "tests.py" -v
