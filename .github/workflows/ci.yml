@@ -43,15 +43,24 @@ jobs:
         run: git clone --depth 1 --branch main https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.jl.git GenerativeModelProtocols.jl
         shell: bash
 
-      - name: Resolve and install Julia dependencies
+      - name: Install Julia package and dependencies
         shell: bash
         run: |
           julia --color=yes -e '
             using Pkg
 
             Pkg.Registry.add("General")
-            Pkg.activate("ci-env")
 
+            # Resolve the Julia package in its own environment first.
+            cd("GenerativeModelProtocols.jl")
+            isfile("Manifest.toml") && rm("Manifest.toml")
+            Pkg.activate(".")
+            Pkg.resolve()
+            Pkg.instantiate()
+
+            # Install the resolved local package into the Python CI environment.
+            cd("..")
+            Pkg.activate("ci-env")
             Pkg.develop(path="GenerativeModelProtocols.jl")
 
             Pkg.add([
@@ -63,12 +72,6 @@ jobs:
               "Tulip"
             ])
 
-            if isfile("ci-env/Manifest.toml")
-              rm("ci-env/Manifest.toml")
-            end
-
-            Pkg.resolve()
-            Pkg.instantiate()
             Pkg.precompile()
           '
 
