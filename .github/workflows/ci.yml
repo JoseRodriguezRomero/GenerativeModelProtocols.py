@@ -98,6 +98,13 @@ jobs:
           PYTHON_JULIAPKG_OFFLINE: "yes"
           JULIA_PROJECT: "${{ github.workspace }}/ci-env"
         run: |
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            JULIA_SSL="$(find /opt/hostedtoolcache/julia/1.13.2/x64 -name 'libcrypto.so.3' -print -quit)"
+            if [[ -n "$JULIA_SSL" ]]; then
+              export LD_LIBRARY_PATH="$(dirname "$JULIA_SSL")${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+            fi
+          fi
+
           python -m coverage run --source=GenerativeModelProtocols test/tests.py -v -s
           python -m coverage xml
         shell: bash
