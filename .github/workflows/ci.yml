@@ -66,6 +66,7 @@ jobs:
         run: |
           using Pkg
 
+          Pkg.autoprecompilation_enabled(false)
           Pkg.Registry.add("General")
           Pkg.activate("ci-env")
 
