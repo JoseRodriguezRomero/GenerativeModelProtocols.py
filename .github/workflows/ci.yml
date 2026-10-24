@@ -97,10 +97,9 @@ jobs:
           PYTHON_JULIACALL_PROJECT: "${{ github.workspace }}/ci-env"
           PYTHON_JULIAPKG_OFFLINE: "yes"
           JULIA_PROJECT: "${{ github.workspace }}/ci-env"
-          LD_LIBRARY_PATH: ""
         run: |
-          coverage run --source=src/GenerativeModelProtocols test/tests.py -v -s
-          coverage xml
+          python -m coverage run --source=GenerativeModelProtocols test/tests.py -v -s
+          python -m coverage xml
         shell: bash
 
       - name: Upload coverage reports to Codecov
