@@ -78,7 +78,7 @@ jobs:
               "HDF5",
               "Distances",
               "OptimalTransport",
-              "Tulip"
+              "Tulip",
               "PythonCall"
           ])
 
