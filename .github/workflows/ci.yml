@@ -84,5 +84,5 @@ jobs:
           Pkg.instantiate()
 
       - name: Run Python tests
-        run: python tests/tests.py -v -s
+        run: python test/tests.py -v -s
         shell: bash
