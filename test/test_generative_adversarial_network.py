@@ -32,3 +32,8 @@ class TestGenerativeAdversarialNetwork(unittest.TestCase):
         model = default_generative_adversarial_network_test()
         self.assertIsInstance(model.discriminator, gen_prot.Chain)
         self.assertIsInstance(model.vae_model, gen_prot.VariationalAutoencoder)
+
+    def test_reassign(self):
+        model = default_generative_adversarial_network_test()
+        with self.assertRaises(BaseException):
+            model._jl_model = 0

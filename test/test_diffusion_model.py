@@ -26,3 +26,8 @@ class TestDiffusionModel(unittest.TestCase):
         self.assertIsInstance(model.denoiser_model, gen_prot.TabularDenoiser)
         self.assertIsInstance(model.noise_schedule, np.ndarray)
 
+    def test_reassign(self):
+        model = default_diffusion_model_test()
+        with self.assertRaises(BaseException):
+            model._jl_model = 0
+

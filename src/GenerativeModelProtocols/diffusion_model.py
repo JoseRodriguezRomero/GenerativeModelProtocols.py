@@ -6,6 +6,7 @@ from .generative_model_protocol import AbstractGenerativeModel
 
 class DiffusionModel(AbstractGenerativeModel):
     __module__ = "GenerativeModelProtocols"
+    __slots__ = ("_jl_model",)
 
     def __init__(
         self,

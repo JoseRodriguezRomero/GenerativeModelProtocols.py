@@ -18,3 +18,8 @@ class TestChain(unittest.TestCase):
         self.assertIsNone(print(make_default_test_chain()))
         self.assertTrue(len(str(make_default_test_chain())) > 0)
 
+    def test_reassign(self):
+        chain = make_default_test_chain()
+        with self.assertRaises(BaseException):
+            chain._jl_chain = 0
+

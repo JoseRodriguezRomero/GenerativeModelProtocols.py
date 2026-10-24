@@ -4,6 +4,7 @@ from .capture_julia_display import capture_julia_display
 
 class TabularDenoiser:
     __module__ = "GenerativeModelProtocols.Auxiliary"
+    __slots__ = ("_jl_denoiser",)
 
     def __new__(
         cls,
@@ -80,6 +81,11 @@ class TabularDenoiser:
     @property
     def max_period(self) -> float:
         return self._jl_denoiser.max_period
+
+    def __setattr__(self, name, value):
+        if name == "_jl_denoiser" and hasattr(self, "_jl_denoiser"):
+            raise AttributeError("_jl_denoiser is read-only")
+        super().__setattr__(name, value)
 
     def __repr__(self):
         return capture_julia_display(self._jl_denoiser)

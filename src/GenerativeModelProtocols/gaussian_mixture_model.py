@@ -6,6 +6,7 @@ from .generative_model_protocol import AbstractGenerativeModel
 
 class GaussianMixtureModel(AbstractGenerativeModel):
     __module__ = "GenerativeModelProtocols"
+    __slots__ = ("_jl_model",)
 
     def __init__(
         self,
@@ -18,15 +19,13 @@ class GaussianMixtureModel(AbstractGenerativeModel):
         if _jl_model is not None:
             self._jl_model = _jl_model
         else:
-            super().__init__(
-                jl.GenerativeModelProtocols.GaussianMixtureModel(
-                    **{
-                        "log_σ²": jl.Array(log_variance),
-                        "μ": jl.Array(means),
-                        "predictor_network": predictor_network._jl_chain,
-                        "p": jl.Vector(weights),
-                    }
-                )
+            self._jl_model =  jl.GenerativeModelProtocols.GaussianMixtureModel(
+                **{
+                    "log_σ²": jl.Array(log_variance),
+                    "μ": jl.Array(means),
+                    "predictor_network": predictor_network._jl_chain,
+                    "p": jl.Vector(weights),
+                }
             )
 
     @property

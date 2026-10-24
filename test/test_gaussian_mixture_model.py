@@ -32,3 +32,7 @@ class TestGaussianMixtureModel(unittest.TestCase):
         self.assertIsInstance(model.predictor_network, gen_prot.Chain)
         self.assertIsInstance(model.weights, np.ndarray)
 
+    def test_reassign(self):
+        model = default_gaussian_mixture_model_test()
+        with self.assertRaises(BaseException):
+            model._jl_model = 0

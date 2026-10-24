@@ -50,3 +50,9 @@ class TestVariationalAutoencoder(unittest.TestCase):
         self.assertTrue(
             all(isinstance(decoder, gen_prot.Chain) for decoder in model.decoders)
         )
+
+    def test_reassign(self):
+        model = default_variational_autoencoder_test()
+        with self.assertRaises(BaseException):
+            model._jl_model = 0
+

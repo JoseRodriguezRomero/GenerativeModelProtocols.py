@@ -5,6 +5,7 @@ from .generative_model_protocol import AbstractGenerativeModel
 
 class NormalizingFlow(AbstractGenerativeModel):
     __module__ = "GenerativeModelProtocols"
+    __slots__ = ("_jl_model",)
 
     def __init__(
             self, 
@@ -14,10 +15,8 @@ class NormalizingFlow(AbstractGenerativeModel):
         if _jl_model is not None:
             self._jl_model = _jl_model
         else:
-            super().__init__(
-                jl.GenerativeModelProtocols.NormalizingFlow(
-                    velocity_field = velocity_field._jl_chain
-                )
+            self._jl_model = jl.GenerativeModelProtocols.NormalizingFlow(
+                velocity_field = velocity_field._jl_chain
             )
 
     @property

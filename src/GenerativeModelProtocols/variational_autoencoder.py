@@ -5,6 +5,7 @@ from .generative_model_protocol import AbstractGenerativeModel
 
 class VariationalAutoencoder(AbstractGenerativeModel):
     __module__ = "GenerativeModelProtocols"
+    __slots__ = ("_jl_model",)
 
     def __init__(
             self, 
@@ -15,11 +16,9 @@ class VariationalAutoencoder(AbstractGenerativeModel):
         if _jl_model is not None:
             self._jl_model = _jl_model
         else:
-            super().__init__(
-                jl.GenerativeModelProtocols.VariationalAutoencoder(
-                    jl.convert(jl.Tuple, tuple(encoder._jl_chain for encoder in encoders)),
-                    jl.convert(jl.Tuple, tuple(decoder._jl_chain for decoder in decoders)),
-                )
+            self._jl_model = jl.GenerativeModelProtocols.VariationalAutoencoder(
+                jl.convert(jl.Tuple, tuple(encoder._jl_chain for encoder in encoders)),
+                jl.convert(jl.Tuple, tuple(decoder._jl_chain for decoder in decoders)),
             )
 
     @property

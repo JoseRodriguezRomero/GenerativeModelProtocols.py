@@ -29,3 +29,8 @@ class TestNormalizingFlow(unittest.TestCase):
         model = default_normalizing_flow_test()
         self.assertIsInstance(model.velocity_field, gen_prot.Chain)
 
+    def test_reassign(self):
+        model = default_normalizing_flow_test()
+        with self.assertRaises(BaseException):
+            model._jl_model = 0
+

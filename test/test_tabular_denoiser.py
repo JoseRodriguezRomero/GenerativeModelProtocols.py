@@ -47,3 +47,8 @@ class TestTabularDenoiser(unittest.TestCase):
         self.assertIsInstance(model.output_projection, gen_prot.Dense)
         self.assertIsInstance(model.max_period, float)
 
+    def test_reassign(self):
+        dense = default_tabular_denoiser_test()
+        with self.assertRaises(BaseException):
+            dense._jl_denoiser = 0
+

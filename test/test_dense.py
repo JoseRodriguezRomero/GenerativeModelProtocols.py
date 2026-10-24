@@ -14,3 +14,8 @@ class TestDense(unittest.TestCase):
         self.assertIsNone(print(make_default_test_layer()))
         self.assertTrue(len(str(make_default_test_layer())) > 0)
 
+    def test_reassign(self):
+        dense = make_default_test_layer()
+        with self.assertRaises(BaseException):
+            dense._jl_dense = 0
+

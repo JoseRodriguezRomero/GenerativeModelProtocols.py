@@ -17,6 +17,7 @@ class ActivationFunction(Enum):
 
 class Dense:
     __module__ = "GenerativeModelProtocols.Auxiliary"
+    __slots__ = ("_jl_dense",)
 
     def __init__(
         self,
@@ -32,6 +33,11 @@ class Dense:
                 f"Lux.Dense({num_inputs} => {num_outputs}, Lux.{activation_function.value})"
             )
 
+    def __setattr__(self, name, value):
+        if name == "_jl_dense" and hasattr(self, "_jl_dense"):
+            raise AttributeError("_jl_dense is read-only")
+        super().__setattr__(name, value)
+
     def __repr__(self):
         return capture_julia_display(self._jl_dense)
     
@@ -41,9 +47,10 @@ class Dense:
 
 class Chain:
     __module__ = "GenerativeModelProtocols.Auxiliary"
+    __slots__ = ("_jl_chain",)
 
     def __init__(
-            self, 
+            self,
             *layers: Dense, 
             _jl_chain = None
         ):
@@ -59,6 +66,11 @@ class Chain:
             ]
 
             self._jl_chain = jl.Lux.Chain(*julia_layers)
+
+    def __setattr__(self, name, value):
+        if name == "_jl_chain" and hasattr(self, "_jl_chain"):
+            raise AttributeError("_jl_chain is read-only")
+        super().__setattr__(name, value)
 
     def __repr__(self):
         return capture_julia_display(self._jl_chain)

@@ -6,6 +6,7 @@ from .variational_autoencoder import VariationalAutoencoder
 
 class GenerativeAdversarialNetwork(AbstractGenerativeModel):
     __module__ = "GenerativeModelProtocols"
+    __slots__ = ("_jl_model",)
 
     def __init__(
         self,
@@ -16,11 +17,9 @@ class GenerativeAdversarialNetwork(AbstractGenerativeModel):
         if _jl_model is not None:
             self._jl_model = _jl_model
         else:
-            super().__init__(
-                jl.GenerativeModelProtocols.GenerativeAdversarialNetwork(
-                    discriminator=discriminator._jl_chain,
-                    vae_model=vae_model._jl_model,
-                )
+            self._jl_model = jl.GenerativeModelProtocols.GenerativeAdversarialNetwork(
+                discriminator=discriminator._jl_chain,
+                vae_model=vae_model._jl_model,
             )
 
     @property
