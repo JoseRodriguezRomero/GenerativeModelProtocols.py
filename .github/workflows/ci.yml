@@ -91,6 +91,8 @@ jobs:
         env:
           PYTHON_JULIAPKG_EXE: "julia"
           PYTHON_JULIAPKG_OFFLINE: "yes"
-          JULIA_PROJECT: "ci-env"
+          JULIA_PROJECT: "${{ github.workspace }}/ci-env"
         run: python test/tests.py -v -s
         shell: bash
+
+        
