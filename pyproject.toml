@@ -6,11 +6,15 @@ build-backend = "setuptools.build_meta"
 name = "GenerativeModelProtocols"
 version = "0.1.0"
 authors = [
-  { name="Jose Romero", email="jrodriguesro@umass.edu" },
+  { name = "Jose Romero", email = "jrodriguesro@umass.edu" },
 ]
 description = "A unified Python framework for building, training, and deploying generative models."
 readme = "README.md"
 requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "juliacall",
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
