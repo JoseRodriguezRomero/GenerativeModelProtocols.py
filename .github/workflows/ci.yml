@@ -79,6 +79,7 @@ jobs:
               "Distances",
               "OptimalTransport",
               "Tulip"
+              "PythonCall"
           ])
 
           Pkg.instantiate()
