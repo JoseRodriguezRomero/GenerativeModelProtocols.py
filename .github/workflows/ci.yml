@@ -49,10 +49,9 @@ jobs:
           julia --project=ci-env -e '
             using Pkg
 
-            Pkg.Registry.add("General")
+            Pkg.Registry.add("General"; force=true)
             Pkg.develop(path="GenerativeModelProtocols.jl")
 
-            Pkg.add("SpecialFunctions")
             Pkg.add([
               "Reactant",
               "FileIO",
@@ -62,6 +61,7 @@ jobs:
               "Tulip"
             ])
 
+            Pkg.resolve()
             Pkg.instantiate()
             Pkg.precompile()
           '
