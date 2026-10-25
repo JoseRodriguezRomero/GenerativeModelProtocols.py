@@ -83,11 +83,24 @@ class GenerativeModelProtocol:
         )
 
     def __call__(self, n_samples: int = 1, **kwargs) -> np.ndarray:
-        return self._jl_protocol(
-            **{
-                "n_samples": n_samples
-            }
-        )
+        return np.asarray(self._jl_protocol(
+            n_samples,
+            **{str(k): v for k, v in kwargs.items()},
+        ))
+
+    def encode(self, x: np.ndarray, **kwargs) -> np.ndarray:
+        return np.asarray(jl.encode(
+            self._jl_protocol,
+            jl.Matrix(x),
+            **{str(k): v for k, v in kwargs.items()},
+        ))
+
+    def decode(self, z: np.ndarray, **kwargs) -> np.ndarray:
+        return np.asarray(jl.decode(
+            self._jl_protocol,
+            jl.Matrix(z),
+            **{str(k): v for k, v in kwargs.items()},
+        ))
 
     def __repr__(self):
         return capture_julia_display(self._jl_protocol)

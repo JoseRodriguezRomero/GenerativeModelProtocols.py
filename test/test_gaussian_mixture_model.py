@@ -47,3 +47,10 @@ class TestGaussianMixtureModel(unittest.TestCase):
 
     def test_train(self):
         model_train_test(self, gen_prot.default_gaussian_mixture_model(2, 20))
+
+    def test_data_synthetization(self):
+        model = gen_prot.default_gaussian_mixture_model(2, 30)
+        protocol = gen_prot.GenerativeModelProtocol(model = model, normalize_data = False)
+
+        self.assertIsInstance(protocol(20), np.ndarray)
+

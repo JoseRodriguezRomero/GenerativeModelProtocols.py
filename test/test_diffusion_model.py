@@ -42,3 +42,17 @@ class TestDiffusionModel(unittest.TestCase):
     def test_train(self):
         model_train_test(self, gen_prot.default_diffusion_model(2, 50))
 
+    def test_data_synthetization(self):
+        data_dims = 2
+        latent_dims = data_dims
+
+        model = gen_prot.default_diffusion_model(data_dims, 20)
+        protocol = gen_prot.GenerativeModelProtocol(model = model, normalize_data = False)
+
+        x_test = np.random.randn(data_dims, 10)
+        z_test = np.random.randn(latent_dims, 10)
+
+        self.assertIsInstance(protocol(20), np.ndarray)
+        self.assertTrue(x_test.shape == protocol.decode(z_test).shape)
+        self.assertTrue(z_test.shape == protocol.encode(x_test).shape)
+
