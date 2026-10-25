@@ -40,6 +40,7 @@ class TestGenerativeAdversarialNetwork(unittest.TestCase):
         self.assertIsInstance(protocol.latent_size, int)
         self.assertIsInstance(protocol.normalize_data, bool)
         self.assertIsInstance(protocol.training_data, np.ndarray)
+        self.assertIsInstance(protocol.model, gen_prot.GenerativeAdversarialNetwork)
 
     def test_reassign(self):
         model = default_generative_adversarial_network_test()

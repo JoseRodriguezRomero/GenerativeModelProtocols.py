@@ -59,6 +59,7 @@ class TestVariationalAutoencoder(unittest.TestCase):
         self.assertIsInstance(protocol.latent_size, int)
         self.assertIsInstance(protocol.normalize_data, bool)
         self.assertIsInstance(protocol.training_data, np.ndarray)
+        self.assertIsInstance(protocol.model, gen_prot.VariationalAutoencoder)
 
     def test_reassign(self):
         model = default_variational_autoencoder_test()

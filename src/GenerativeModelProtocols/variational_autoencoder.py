@@ -1,6 +1,6 @@
 from juliacall import Main as jl
 from .auxiliary.lux import Chain
-from .generative_model_protocol import AbstractGenerativeModel
+from .abstract_generative_model import AbstractGenerativeModel
 
 
 class VariationalAutoencoder(AbstractGenerativeModel):

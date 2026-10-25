@@ -38,6 +38,7 @@ class TestGaussianMixtureModel(unittest.TestCase):
         self.assertIsInstance(protocol.input_size, int)
         self.assertIsInstance(protocol.normalize_data, bool)
         self.assertIsInstance(protocol.training_data, np.ndarray)
+        self.assertIsInstance(protocol.model, gen_prot.GaussianMixtureModel)
 
     def test_reassign(self):
         model = default_gaussian_mixture_model_test()

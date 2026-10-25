@@ -1,7 +1,7 @@
 import numpy as np
 from juliacall import Main as jl
 from .auxiliary.tabular_denoiser import TabularDenoiser
-from .generative_model_protocol import AbstractGenerativeModel
+from .abstract_generative_model import AbstractGenerativeModel
 
 
 class DiffusionModel(AbstractGenerativeModel):
