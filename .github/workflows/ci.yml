@@ -82,6 +82,7 @@ jobs:
               "Distances",
               "OptimalTransport",
               "Tulip",
+              "DifferentialEquations",
               "Lux",
               "Optimisers",
               "PythonCall"
