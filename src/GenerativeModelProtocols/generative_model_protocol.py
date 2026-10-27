@@ -1,4 +1,5 @@
 import numpy as np
+from enum import Enum
 from juliacall import Main as jl
 from .auxiliary.capture_julia_display import capture_julia_display
 
@@ -10,6 +11,12 @@ from .diffusion_model import DiffusionModel
 from .normalizing_flow import NormalizingFlow
 
 
+class TrainingDataNormalization(Enum):
+    FULL_NORMALIZATION   = jl.GenerativeModelProtocols.full_normalization
+    NO_NORMALIZATION     = jl.GenerativeModelProtocols.no_normalization
+    HYBRID_NORMALIZATION = jl.GenerativeModelProtocols.hybrid_normalization
+
+
 class GenerativeModelProtocol:
     __module__ = "GenerativeModelProtocols"
     __slots__ = ("_jl_protocol",)
@@ -17,9 +24,11 @@ class GenerativeModelProtocol:
     def __init__(
             self, 
             model: AbstractGenerativeModel, 
-            training_data: np.ndarray = np.empty((0, 0)), 
-            normalize_data: bool = True
+            training_data: np.ndarray = np.zeros((0, 0)),
+            normalize_data = TrainingDataNormalization.HYBRID_NORMALIZATION
         ):
+        if isinstance(normalize_data, TrainingDataNormalization):
+            normalize_data = normalize_data.value
         self._jl_protocol = jl.GenerativeModelProtocol(
             model._jl_model,
             jl.Matrix(training_data),
@@ -56,8 +65,8 @@ class GenerativeModelProtocol:
         return jl.latent_size(self._jl_protocol)
 
     @property
-    def normalize_data(self) -> bool:
-        return self._jl_protocol.normalize_data
+    def normalize_data(self) -> tuple[bool, ...]:
+        return tuple(self._jl_protocol.normalize_data)
 
     @property
     def training_data(self) -> np.ndarray:
@@ -107,4 +116,3 @@ class GenerativeModelProtocol:
 
     def __str__(self):
         return self.__repr__()
-

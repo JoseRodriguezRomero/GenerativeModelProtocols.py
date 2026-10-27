@@ -36,7 +36,9 @@ class TestGaussianMixtureModel(unittest.TestCase):
 
         protocol = gen_prot.GenerativeModelProtocol(model = model)
         self.assertIsInstance(protocol.input_size, int)
-        self.assertIsInstance(protocol.normalize_data, bool)
+        self.assertTrue(
+            all(isinstance(normalize_data, bool) for normalize_data in protocol.normalize_data)
+        )
         self.assertIsInstance(protocol.training_data, np.ndarray)
         self.assertIsInstance(protocol.model, gen_prot.GaussianMixtureModel)
 
