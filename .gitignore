@@ -9,3 +9,7 @@ __pycache__/
 *.egg-info/
 build/
 dist/
+
+# Sphinx documentation build output
+docs/_build/
+*.synctex.gz
