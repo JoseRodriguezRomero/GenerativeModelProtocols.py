@@ -2,7 +2,9 @@ name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -100,7 +102,8 @@ jobs:
           JULIA_PROJECT: "${{ github.workspace }}/ci-env"
         run: |
           unset LD_PRELOAD
-          export LD_LIBRARY_PATH="$(julia -e 'using OpenSSL_jll; print(dirname(OpenSSL_jll.libssl_path))')${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+          julia_libssl_dir="$(julia -e 'using OpenSSL_jll; print(dirname(OpenSSL_jll.libssl_path))')"
+          export LD_LIBRARY_PATH="${julia_libssl_dir}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
           PYTHON_JULIACALL_HANDLE_SIGNALS=yes python -m coverage run --source=GenerativeModelProtocols test/tests.py -v -s
           python -m coverage xml
         shell: bash
