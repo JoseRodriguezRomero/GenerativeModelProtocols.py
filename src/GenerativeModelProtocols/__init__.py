@@ -18,6 +18,7 @@ from .normalizing_flow import NormalizingFlow
 from .diffusion_model import DiffusionModel
 from .auxiliary.tabular_denoiser import TabularDenoiser
 from .generative_model_protocol import GenerativeModelProtocol
+from .generative_model_protocol import TrainingDataNormalization
 
 from .auxiliary.lux import Dense, Chain, ActivationFunction
 
@@ -66,6 +67,9 @@ __all__ = [
     "TabularDenoiser",
     "GenerativeModelProtocol",
 
+    # other auxiliary
+    "TrainingDataNormalization",
+
     # convenience constructors
     "default_variational_autoencoder", 
     "default_generative_adversarial_network",
@@ -88,4 +92,3 @@ __all__ = [
     "Chain",
     "ActivationFunction",
 ]
-
