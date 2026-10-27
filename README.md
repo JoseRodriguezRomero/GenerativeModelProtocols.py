@@ -2,6 +2,7 @@
 > This module is at a very early development stage and by no means ready for general users.
 
 [![CI](https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.py/actions/workflows/ci.yml/badge.svg)](https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.py/actions/workflows/ci.yml)
+[![Documentation](https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.py/actions/workflows/docs.yml/badge.svg)](https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.py/actions/workflows/docs.yml)
 [![codecov](https://codecov.io/gh/JoseRodriguezRomero/GenerativeModelProtocols.py/graph/badge.svg?token=3502GG15JH)](https://codecov.io/gh/JoseRodriguezRomero/GenerativeModelProtocols.py)
 
 # GenerativeModelProtocols.py
