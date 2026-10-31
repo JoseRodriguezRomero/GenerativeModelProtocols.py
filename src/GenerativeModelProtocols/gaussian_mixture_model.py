@@ -49,3 +49,9 @@ def default_gaussian_mixture_model(dimensions: int, k: int):
     _jl_model = jl.seval(f"GenerativeModelProtocols.GaussianMixtureModel({dimensions}, {k})")
     return GaussianMixtureModel(_jl_model = _jl_model)
 
+
+__all__ = [
+    "GaussianMixtureModel",
+    "default_gaussian_mixture_model"
+]
+

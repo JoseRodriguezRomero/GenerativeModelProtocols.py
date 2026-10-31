@@ -40,3 +40,9 @@ def default_variational_autoencoder(dimensions: int, latent_dimension: int = 1, 
     _jl_model = jl.seval(f"GenerativeModelProtocols.VariationalAutoencoder({dimensions}, {latent_dimension}, {latent_layers})")
     return VariationalAutoencoder(_jl_model = _jl_model)
 
+
+__all__ = [
+    "VariationalAutoencoder",
+    "default_variational_autoencoder"
+]
+

@@ -110,3 +110,9 @@ def default_tabular_denoiser(
     )
     return TabularDenoiser(_jl_denoiser = _jl_denoiser)
 
+
+__all__ = [
+    "TabularDenoiser",
+    "default_tabular_denoiser"
+]
+

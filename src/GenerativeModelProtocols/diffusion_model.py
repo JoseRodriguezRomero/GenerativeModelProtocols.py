@@ -35,3 +35,9 @@ def default_diffusion_model(dimensions: int, T: int = 5, beta_start: float = 1.0
     _jl_model = jl.seval(f"GenerativeModelProtocols.DiffusionModel({dimensions}, {T}, {beta_start}, {beta_end})")
     return DiffusionModel(_jl_model = _jl_model)
 
+
+__all__ = [
+    "DiffusionModel",
+    "default_diffusion_model"
+]
+

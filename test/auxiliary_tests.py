@@ -33,7 +33,8 @@ def model_train_test(env, model, **kwargs):
         model         = model,
         training_data = training_data
     )
+    optimiser = gen_prot.default_optimiser(protocol)
     env.assertIsInstance(protocol, gen_prot.GenerativeModelProtocol)
-    train_log = protocol.train(epochs = 20, **kwargs)
+    train_log = protocol.train(epochs = 20, optimiser = optimiser, **kwargs)
     env.assertIsNotNone(train_log)
 
