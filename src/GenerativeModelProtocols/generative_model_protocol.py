@@ -9,12 +9,14 @@ from enum import Enum
 from juliacall import Main as jl
 from .auxiliary.capture_julia_display import capture_julia_display
 
-from .abstract_generative_model import AbstractGenerativeModel
-from .variational_autoencoder import VariationalAutoencoder
-from .generative_adversarial_network import GenerativeAdversarialNetwork
-from .gaussian_mixture_model import GaussianMixtureModel
-from .diffusion_model import DiffusionModel
-from .normalizing_flow import NormalizingFlow
+from .abstract_generative_model import *
+from .variational_autoencoder import *
+from .generative_adversarial_network import *
+from .gaussian_mixture_model import *
+from .diffusion_model import *
+from .normalizing_flow import *
+
+from .auxiliary.optimisers import *
 
 
 _TRAIN_LOCK = Lock()
@@ -118,7 +120,16 @@ class GenerativeModelProtocol:
         }
 
         if 'optimiser' in kwargs:
-            kwargs['optimiser'] = kwargs['optimiser']._jl_optimiser
+            if isinstance(kwargs['optimiser'], tuple):
+                optimisers = kwargs['optimiser']
+                _jl_optimiser_1 = optimisers[0]._jl_optimiser
+                _jl_optimiser_2 = optimisers[1]._jl_optimiser
+                kwargs['optimiser'] = jl.convert(
+                    jl.Tuple,
+                    (_jl_optimiser_1, _jl_optimiser_2),
+                )
+            else:
+                kwargs['optimiser'] = kwargs['optimiser']._jl_optimiser
 
         clean_kwargs = {
             key_map.get(k, k): v
@@ -192,7 +203,54 @@ class GenerativeModelProtocol:
         return self.__repr__()
 
 
+def _get_jl_optimiser_struct(_jl_optimiser):
+    if jl.isa(_jl_optimiser, jl.Descent):
+        return Descent(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.Momentum):
+        return Momentum(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.Nesterov):
+        return Nesterov(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.Rprop):
+        return Rprop(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.RMSProp):
+        return RMSProp(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.Adam):
+        return Adam(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.RAdam):
+        return RAdam(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.AdaMax):
+        return AdaMax(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.OAdam):
+        return OAdam(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.AdaGrad):
+        return AdaGrad(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.AdaDelta):
+        return AdaDelta(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.AMSGrad):
+        return AMSGrad(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.NAdam):
+        return NAdam(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.AdamW):
+        return AdamW(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.AdaBelief):
+        return AdaBelief(_jl_optimiser=_jl_optimiser)
+    elif jl.isa(_jl_optimiser, jl.Lion):
+        return Lion(_jl_optimiser=_jl_optimiser)
+    else:
+        raise TypeError(f"Unsupported Julia optimiser type: {jl.typeof(_jl_optimiser)}")
+
+
+def default_optimiser(protocol: GenerativeModelProtocol):
+    _jl_optimiser = jl.GenerativeModelProtocols.default_optimiser(protocol._jl_protocol)
+
+    if isinstance(_jl_optimiser, tuple):
+        return (_get_jl_optimiser_struct(_jl_optimiser[0]), _get_jl_optimiser_struct(_jl_optimiser[1]))
+    else:
+        return _get_jl_optimiser_struct(_jl_optimiser)
+
+
 __all__ = [
     "TrainingDataNormalization",
-    "GenerativeModelProtocol"
+    "GenerativeModelProtocol",
+    "default_optimiser"
 ]
