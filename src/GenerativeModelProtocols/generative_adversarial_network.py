@@ -35,3 +35,8 @@ def default_generative_adversarial_network(dimensions: int, latent_dimension: in
     _jl_model = jl.seval(f"GenerativeModelProtocols.GenerativeAdversarialNetwork({dimensions}, {latent_dimension}, {latent_layers})")
     return GenerativeAdversarialNetwork(_jl_model = _jl_model)
 
+
+__all__ = [
+    "GenerativeAdversarialNetwork",
+    "default_generative_adversarial_network"
+]

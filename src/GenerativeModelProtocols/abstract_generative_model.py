@@ -1,4 +1,3 @@
-import numpy as np
 from juliacall import Main as jl
 from .auxiliary.capture_julia_display import capture_julia_display
 

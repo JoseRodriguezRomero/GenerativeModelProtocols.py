@@ -78,3 +78,10 @@ class Chain:
     def __str__(self):
         return self.__repr__()
 
+
+__all__ = [
+    "ActivationFunction",
+    "Dense",
+    "Chain"
+]
+

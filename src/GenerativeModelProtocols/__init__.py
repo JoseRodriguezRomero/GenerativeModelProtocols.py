@@ -4,23 +4,17 @@ jl.seval("using GenerativeModelProtocols")
 jl.seval("using Optimisers")
 jl.seval("using Lux")
 
-from .variational_autoencoder import default_variational_autoencoder
-from .generative_adversarial_network import default_generative_adversarial_network
-from .gaussian_mixture_model import default_gaussian_mixture_model
-from .normalizing_flow import default_normalizing_flow
-from .diffusion_model import default_diffusion_model
-from .auxiliary.tabular_denoiser import default_tabular_denoiser
+from .auxiliary.optimisers import *
+from .auxiliary.lux import *
 
-from .variational_autoencoder import VariationalAutoencoder
-from .generative_adversarial_network import GenerativeAdversarialNetwork
-from .gaussian_mixture_model import GaussianMixtureModel
-from .normalizing_flow import NormalizingFlow
-from .diffusion_model import DiffusionModel
-from .auxiliary.tabular_denoiser import TabularDenoiser
-from .generative_model_protocol import GenerativeModelProtocol
-from .generative_model_protocol import TrainingDataNormalization
+from .generative_model_protocol import *
+from .auxiliary.tabular_denoiser import *
 
-from .auxiliary.lux import Dense, Chain, ActivationFunction
+from .variational_autoencoder import *
+from .generative_adversarial_network import *
+from .gaussian_mixture_model import *
+from .normalizing_flow import *
+from .diffusion_model import *
 
 
 def load_differential_equations():
@@ -92,3 +86,4 @@ __all__ = [
     "Chain",
     "ActivationFunction",
 ]
+

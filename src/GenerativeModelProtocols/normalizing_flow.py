@@ -28,3 +28,9 @@ def default_normalizing_flow(dimensions: int):
     _jl_model = jl.seval(f"GenerativeModelProtocols.NormalizingFlow({dimensions})")
     return NormalizingFlow(_jl_model = _jl_model)
 
+
+__all__ = [
+    "NormalizingFlow",
+    "default_normalizing_flow"
+]
+
