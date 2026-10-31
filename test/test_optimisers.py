@@ -102,6 +102,13 @@ class TestOptimisers(unittest.TestCase):
         optimiser_test_copy(self, optimiser, gen_prot.AdaGrad)
         optimiser_test_print(self, optimiser)
 
+    def test_adadelta(self):
+        optimiser = gen_prot.AdaDelta()
+        self.assertIsInstance(optimiser.rho, float)
+        self.assertIsInstance(optimiser.epsilon, float)
+        optimiser_test_copy(self, optimiser, gen_prot.AdaDelta)
+        optimiser_test_print(self, optimiser)
+
     def test_amsgrad(self):
         optimiser = gen_prot.AMSGrad()
         self.assertIsInstance(optimiser.eta, float)
