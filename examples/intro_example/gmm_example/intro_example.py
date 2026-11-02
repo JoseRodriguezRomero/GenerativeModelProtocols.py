@@ -39,9 +39,7 @@ fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(
     nrows   = 2, 
     ncols   = 2, 
     figsize = (8, 5),
-    dpi     = 100, 
-    sharex  = True,
-    sharey  = True
+    dpi     = 100
 )
 
 
@@ -52,6 +50,9 @@ def plot_scatter_data(ax, data, title):
         edgecolors = 'black',
     )
     ax.set_title(title)
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_xlim(-1.25, 1.25)
+    ax.set_ylim(-1.25, 1.25)
 
 
 plot_scatter_data(ax1, train_data, "Training data")
@@ -86,6 +87,7 @@ def plot_hist2d_dat(ax, data, title):
         rasterized=True
     )
     ax.set_title(title)
+    ax.set_aspect("equal", adjustable="box")
     ax.set_xlim(-1.25, 1.25)
     ax.set_ylim(-1.25, 1.25)
 

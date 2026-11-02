@@ -36,30 +36,32 @@ fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(
     nrows   = 2, 
     ncols   = 2, 
     figsize = (8, 8),
-    dpi     = 100, 
-    sharey  = True
+    dpi     = 100
 )
 
 
 def scatter_data_comp(data, ax, title):
-    p = ax.scatter(
+    ax.scatter(
         data[0,:], data[1,:], 
         edgecolors = 'black',
         linewidths = 0.8
     )
     ax.set_title(title)
-    return p
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_xlim(-1.25, 1.25)
+    ax.set_ylim(-1.25, 1.25)
 
 
 def hist2d_data_comp(data, ax):
-    p = ax.hist2d(
+    ax.hist2d(
         data[0, :], data[1, :],
         bins=100,
         cmap="viridis",
         rasterized=True
     )
     ax.set_aspect("equal", adjustable="box")
-    return p
+    ax.set_xlim(-1.25, 1.25)
+    ax.set_ylim(-1.25, 1.25)
 
 
 hist2d_data_size = 50000
