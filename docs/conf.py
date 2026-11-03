@@ -19,6 +19,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     "sphinxcontrib.bibtex",
+    "sphinx_rtd_dark_mode",
 ]
 
 source_suffix = {
@@ -43,6 +44,10 @@ html_theme_options = {
 }
 html_static_path = ["_static"]
 html_css_files = ["custom.css"]
+html_js_files = ["system_theme.js"]
+html_logo = "assets/logo.svg"
+html_extra_path = ["assets/logo-dark.svg"]
+default_dark_mode = False
 html_theme_options = {
     "show_nav_level": 2,
 }

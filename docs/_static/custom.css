@@ -17,3 +17,7 @@ table {
     width: fit-content !important;
     margin-inline: auto !important;
 }
+
+html[data-theme="dark"] .wy-side-nav-search img.logo {
+    content: url("../logo-dark.svg");
+}
