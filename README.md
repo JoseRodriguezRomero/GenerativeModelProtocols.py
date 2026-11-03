@@ -1,6 +1,13 @@
 > [!CAUTION]
 > This module is at a very early development stage and by no means ready for general users.
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg">
+    <img src="docs/assets/logo.svg" alt="GenerativeModelProtocols.jl logo" width="600">
+  </picture>
+</p>
+
 [![CI](https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.py/actions/workflows/ci.yml/badge.svg)](https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.py/actions/workflows/ci.yml)
 [![Documentation](https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.py/actions/workflows/docs.yml/badge.svg)](https://github.com/JoseRodriguezRomero/GenerativeModelProtocols.py/actions/workflows/docs.yml)
 [![codecov](https://codecov.io/gh/JoseRodriguezRomero/GenerativeModelProtocols.py/graph/badge.svg?token=3502GG15JH)](https://codecov.io/gh/JoseRodriguezRomero/GenerativeModelProtocols.py)
