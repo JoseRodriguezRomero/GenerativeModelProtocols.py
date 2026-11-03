@@ -45,7 +45,6 @@ The currently built-in generative model architectures are:
 
 ```{toctree}
 :maxdepth: 1
-:titlesonly:
 :caption: Generative Models
 
 generative_models/variational_autoencoders
@@ -57,12 +56,18 @@ generative_models/normalizing_flows
 
 ```{toctree}
 :maxdepth: 1
-:titlesonly:
 :caption: Distribution Distances
 
 distribution_distances/energy_distance
 distribution_distances/earth_mover_distance
 distribution_distances/sinkhorn_distance
+```
+
+```{toctree}
+:maxdepth: 1
+:caption: Examples
+
+examples/getting_started/index
 ```
 
 ```{toctree}

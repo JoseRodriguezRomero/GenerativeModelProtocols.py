@@ -77,7 +77,7 @@ plt.show()
 
 test_data = make_data(800)
 z_test_data = protocol.encode(test_data)
-recon_test_data = protocol.decode(test_data)
+recon_test_data = protocol.decode(z_test_data)
 
 fig, ax = plt.subplots()
 ax.scatter(

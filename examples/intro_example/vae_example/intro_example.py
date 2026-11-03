@@ -29,7 +29,6 @@ protocol.train(
 
 ## Compare Distributions
 
-gen_prot.load_differential_equations()
 synthetic_data = protocol(num_samples)
 
 fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(
