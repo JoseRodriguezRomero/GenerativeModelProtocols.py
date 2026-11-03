@@ -4,6 +4,11 @@ from .capture_julia_display import capture_julia_display
 
 
 class ActivationFunction(Enum):
+    """
+    An enumeration of activation functions available for use in neural network 
+    layers.
+    """
+
     RELU       = "relu"
     GELU       = "gelu"
     TANH       = "tanh"
@@ -16,6 +21,16 @@ class ActivationFunction(Enum):
 
 
 class Dense:
+    """
+    A dense layer in a neural network. This is a wrapper around the underlying 
+    Julia `Lux.Dense` layer.
+
+    Attributes:
+        num_inputs (`int`): The number of input units.
+        num_outputs (`int`): The number of output units.
+        activation_function (`ActivationFunction`): The activation function applied to the output.
+        _jl_dense: The underlying Julia model instance. User should not modify this directly.
+    """
     __module__ = "GenerativeModelProtocols.Auxiliary"
     __slots__ = ("_jl_dense",)
 
@@ -46,6 +61,15 @@ class Dense:
 
 
 class Chain:
+    """
+    A chain of layers in a neural network. This is a wrapper around the 
+    underlying Julia `Lux.Chain` layer.
+
+    Attributes:
+        layers (`tuple[Dense, ...]`): The layers in the chain.
+        _jl_chain: The underlying Julia model instance. User should not modify this directly.
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary"
     __slots__ = ("_jl_chain",)
 

@@ -51,12 +51,31 @@ def _julia_serialization_functions():
 
 
 class TrainingDataNormalization(Enum):
+    """
+    An enumeration of training data normalization options.
+    """
+    
     FULL_NORMALIZATION   = jl.GenerativeModelProtocols.full_normalization
     NO_NORMALIZATION     = jl.GenerativeModelProtocols.no_normalization
     HYBRID_NORMALIZATION = jl.GenerativeModelProtocols.hybrid_normalization
 
 
 class GenerativeModelProtocol:
+    """
+    A protocol containing a user-specified generative model, and all of its 
+    parameters needed to train it and evaluate it. By default the training of 
+    the generative model is done in the CPU, however, this can be changed by 
+    setting `device` to a GPU device of preference.
+
+    Attributes:
+        model (`AbstractGenerativeModel`): The generative model used by the protocol.
+        training_data (`np.ndarray`): The training data used by the protocol.
+        normalize_data (`tuple[bool, ...]`): The normalization settings for the training data.
+        input_size (`int`): The input size of the generative model.
+        latent_size (`int`): The latent size of the generative model.
+        _jl_protocol: The underlying Julia protocol instance. User should not modify this directly.
+    """
+
     __module__ = "GenerativeModelProtocols"
     __slots__ = ("_jl_protocol",)
 

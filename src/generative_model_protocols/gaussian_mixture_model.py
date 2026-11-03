@@ -5,6 +5,18 @@ from .abstract_generative_model import AbstractGenerativeModel
 
 
 class GaussianMixtureModel(AbstractGenerativeModel):
+    """
+    A class containing the general parameters needed to evaluate and train a 
+    Gaussian Mixture Model (GMM). Once trained, it can be used a generative 
+    model.
+
+    Attributes:
+        log_variance (`np.ndarray`): The log variance of the Gaussian components.
+        means (`np.ndarray`): The means of the Gaussian components.
+        predictor_network (`Chain`): The predictor network used by the GMM.
+        weights (`np.ndarray`): The weights of the Gaussian components.
+        _jl_model: The underlying Julia model instance. User should not modify this directly.
+    """
     __module__ = "GenerativeModelProtocols"
     __slots__ = ("_jl_model",)
 
@@ -46,6 +58,18 @@ class GaussianMixtureModel(AbstractGenerativeModel):
 
 
 def default_gaussian_mixture_model(dimensions: int, k: int):
+    """
+    Creates a default Gaussian Mixture Model (GMM) with the specified dimensions 
+    and number of components.
+
+    Args:
+        dimensions (`int`): The number of dimensions of the data.
+        k (`int`): The number of Gaussian components.
+
+    Returns:
+        `GaussianMixtureModel`: The default GMM instance.
+    """
+
     _jl_model = jl.seval(f"GenerativeModelProtocols.GaussianMixtureModel({dimensions}, {k})")
     return GaussianMixtureModel(_jl_model = _jl_model)
 

@@ -4,6 +4,16 @@ from .abstract_generative_model import AbstractGenerativeModel
 
 
 class VariationalAutoencoder(AbstractGenerativeModel):
+    """
+    A structure containing the general parameters needed to evaluate and train 
+    a Variational Autoencoder (VAE). Once trained, its decoder can be used as a 
+    generative model.
+
+    Attributes:
+        encoders (`tuple[Chain, ...]`): The encoders of the VAE.
+        decoders (`tuple[Chain, ...]`): The decoders of the VAE.
+        _jl_model: The underlying Julia model instance. User should not modify this directly.
+    """
     __module__ = "GenerativeModelProtocols"
     __slots__ = ("_jl_model",)
 
@@ -36,7 +46,23 @@ class VariationalAutoencoder(AbstractGenerativeModel):
         )
 
 
-def default_variational_autoencoder(dimensions: int, latent_dimension: int = 1, latent_layers: int = 1):
+def default_variational_autoencoder(
+        dimensions: int, 
+        latent_dimension: int = 1, 
+        latent_layers: int = 1
+    ):
+    """
+    Creates a default Variational Autoencoder (VAE) with the specified 
+    dimensions, latent dimension, and number of latent layers.
+
+    Args:
+        dimensions (`int`): The number of dimensions of the data.
+        latent_dimension (`int`, optional): The dimension of the latent space. Defaults to 1.
+        latent_layers (`int`, optional): The number of layers in the latent space. Defaults to 1.
+
+    Returns:
+        `VariationalAutoencoder`: The default VAE instance.
+    """
     _jl_model = jl.seval(f"GenerativeModelProtocols.VariationalAutoencoder({dimensions}, {latent_dimension}, {latent_layers})")
     return VariationalAutoencoder(_jl_model = _jl_model)
 

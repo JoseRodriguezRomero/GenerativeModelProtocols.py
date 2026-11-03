@@ -18,35 +18,59 @@ from .diffusion_model import *
 
 
 def load_differential_equations():
+    """
+    Loads the `DifferentialEquations.jl` package in Julia.
+    """
+
     jl.seval("using DifferentialEquations")
 
 
 def load_reactant():
+    """
+    Loads the `Reactant.jl` package in Julia.
+    """
     jl.seval("using Reactant")
 
 
 def load_reactant_cpu():
+    """
+    Loads the `Reactant.jl` package in Julia and sets the backend to CPU.
+    """
     load_reactant()
     jl.seval("Reactant.set_backend(\"cpu\")")
 
 
 def load_reactant_gpu():
+    """
+    Loads the `Reactant.jl` package in Julia and sets the backend to GPU.
+    """
     load_reactant()
     jl.seval("Reactant.set_backend(\"gpu\")")
 
 
 def load_reactant_cuda():
+    """
+    Loads the `Reactant.jl` package in Julia and sets the backend to CUDA.
+    """
     load_reactant()
     jl.seval("Reactant.set_backend(\"cuda\")")
 
 
 def load_distribution_distance_extension():
+    """
+    Loads the distribution distance extension packages in Julia, including 
+    `Tulip.jl`, `Distances.jl`, and `OptimalTransport.jl`.
+    """
     jl.seval("using Tulip")
     jl.seval("using Distances")
     jl.seval("using OptimalTransport")
 
 
 def load_save_load_exension():
+    """
+    Loads the save and load extension packages in Julia, including `FileIO.jl` 
+    and `HDF5.jl`.
+    """
     jl.seval("using FileIO")
     jl.seval("using HDF5")
 
