@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-import GenerativeModelProtocols as gen_prot
+import generative_model_protocols as gen_prot
 
 from test_variational_autoencoder import default_variational_autoencoder_test
 from auxiliary_tests import print_model_test_assert

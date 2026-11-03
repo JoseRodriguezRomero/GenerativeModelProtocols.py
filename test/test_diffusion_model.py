@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-import GenerativeModelProtocols as gen_prot
+import generative_model_protocols as gen_prot
 
 from test_tabular_denoiser import default_tabular_denoiser_test
 from auxiliary_tests import model_train_test

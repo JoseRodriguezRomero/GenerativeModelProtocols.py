@@ -1,5 +1,5 @@
 import numpy as np
-import GenerativeModelProtocols as gen_prot
+import generative_model_protocols as gen_prot
 
 def make_data(num_samples):
     t = (2.0 * np.pi) * np.random.rand(num_samples)

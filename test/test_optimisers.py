@@ -1,5 +1,5 @@
 import unittest
-import GenerativeModelProtocols as gen_prot
+import generative_model_protocols as gen_prot
 
 
 def optimiser_test_copy(env, optimiser, type_optimiser):

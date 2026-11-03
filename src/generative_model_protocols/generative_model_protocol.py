@@ -25,7 +25,7 @@ _TRAIN_WORKER = r'''
 import pickle
 import sys
 from juliacall import Main as jl
-import GenerativeModelProtocols
+import generative_model_protocols
 
 jl.seval("using Serialization")
 read_serialized = jl.seval("path -> open(Serialization.deserialize, path)")

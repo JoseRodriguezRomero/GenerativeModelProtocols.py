@@ -1,5 +1,5 @@
 import unittest
-import GenerativeModelProtocols as gen_prot
+import generative_model_protocols as gen_prot
 
 
 def make_default_test_chain() -> gen_prot.Chain:

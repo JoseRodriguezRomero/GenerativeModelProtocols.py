@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-import GenerativeModelProtocols as gen_prot
+import generative_model_protocols as gen_prot
 
 from auxiliary_tests import print_model_test_assert
 from auxiliary_tests import model_train_test
