@@ -8,7 +8,7 @@ the true underlying distribution or the ability to sample additional data.
 
 For this example we will need to load the following modules
 ```python
-import GenerativeModelProtocols as gen_prot
+import generative_model_protocols as gen_prot
 import numpy as np
 ```
 let us consider the following function to generate our random two-dimensional 

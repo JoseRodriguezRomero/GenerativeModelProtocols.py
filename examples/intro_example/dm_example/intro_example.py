@@ -1,4 +1,4 @@
-import GenerativeModelProtocols as gen_prot
+import generative_model_protocols as gen_prot
 import matplotlib.pyplot as plt
 import numpy as np
 
