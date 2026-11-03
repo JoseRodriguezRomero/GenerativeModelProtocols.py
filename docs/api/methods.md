@@ -1,8 +1,5 @@
 # Methods
 
-`GenerativeModelProtocol` provides the common training and inference interface
-for generative models.
-
 ```{eval-rst}
 .. autofunction:: generative_model_protocols.load_differential_equations
 
