@@ -3,6 +3,20 @@ from .lux import Chain, Dense
 from .capture_julia_display import capture_julia_display
 
 class TabularDenoiser:
+    """
+    A time-conditioned residual neural network for vector-based diffusion 
+    models.
+
+    Attributes:
+        T (`int`): The number of time steps.
+        time_embedding_mlp (`Chain`): The MLP used for time embedding.
+        input_projection (`Dense`): The input projection layer.
+        residual_layers (`tuple[Dense, ...]`): The residual layers of the network.
+        time_projection_layers (`tuple[Dense, ...]`): The time projection layers.
+        output_projection (`Dense`): The output projection layer.
+        max_period (`float`): The maximum period for the time embedding.
+        _jl_denoiser: The underlying Julia model instance. User should not modify this directly.
+    """
     __module__ = "GenerativeModelProtocols.Auxiliary"
     __slots__ = ("_jl_denoiser",)
 
@@ -101,6 +115,22 @@ def default_tabular_denoiser(
     activation_function=jl.GenerativeModelProtocols.swish,
     max_period: float = 10000.0,
 ):
+    """
+    Creates a default Tabular Denoiser with the specified number of inputs, 
+    hidden layer size, number of time steps, activation function, and maximum 
+    period.
+
+    Args:
+        num_inputs (`int`): The number of input features.
+        hidden_layer_size (`int`, optional): The size of the hidden layers. Defaults to 64.
+        T (`int`, optional): The number of time steps. Defaults to 32.
+        activation_function (callable, optional): The activation function to use. Defaults to `swish`.
+        max_period (`float`, optional): The maximum period for the time embedding. Defaults to 10000.0.
+
+    Returns:
+        `TabularDenoiser`: The default Tabular Denoiser instance.
+    """
+
     _jl_denoiser = jl.GenerativeModelProtocols.TabularDenoiser(
         num_inputs,
         hidden_layer_size=hidden_layer_size,

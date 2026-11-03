@@ -45,6 +45,16 @@ The currently built-in generative model architectures are:
 
 ```{toctree}
 :maxdepth: 1
+:caption: API
+
+api/classes
+api/methods
+api/enums
+api/convenience_constructors
+```
+
+```{toctree}
+:maxdepth: 1
 :caption: Generative Models
 
 generative_models/variational_autoencoders

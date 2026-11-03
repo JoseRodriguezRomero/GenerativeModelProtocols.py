@@ -18,6 +18,55 @@ table {
     margin-inline: auto !important;
 }
 
+/* Keep class signatures readable while retaining their syntax colors. */
+html[data-theme="dark"].writer-html5 .rst-content dl.py.class > dt.sig.sig-object.py {
+    color: #d1d5db !important;
+}
+
+html[data-theme="dark"].writer-html5 .rst-content dl.py.class > dt.sig.sig-object.py .property .k .pre {
+    color: #41c2ea !important;
+}
+
+html[data-theme="dark"].writer-html5 .rst-content dl.py.class > dt.sig.sig-object.py .sig-prename .pre,
+html[data-theme="dark"].writer-html5 .rst-content dl.py.class > dt.sig.sig-object.py .sig-name .pre,
+html[data-theme="dark"].writer-html5 .rst-content dl.py.class > dt.sig.sig-object.py .sig-param .n .pre,
+html[data-theme="dark"].writer-html5 .rst-content dl.py.class > dt.sig.sig-object.py .sig-param .o .pre,
+html[data-theme="dark"].writer-html5 .rst-content dl.py.class > dt.sig.sig-object.py .default_value .pre {
+    color: #f1f3f5 !important;
+}
+
+/* Apply the same readability treatment to the functions on this API page. */
+html[data-theme="dark"].writer-html5 .rst-content #convenience-constructors dl.py.function > dt.sig.sig-object.py {
+    color: #d1d5db !important;
+}
+
+html[data-theme="dark"].writer-html5 .rst-content #convenience-constructors dl.py.function > dt.sig.sig-object.py .sig-name .pre {
+    color: #8bb8df !important;
+}
+
+html[data-theme="dark"].writer-html5 .rst-content #convenience-constructors dl.py.function > dt.sig.sig-object.py .sig-prename .pre,
+html[data-theme="dark"].writer-html5 .rst-content #convenience-constructors dl.py.function > dt.sig.sig-object.py .sig-param .n .pre,
+html[data-theme="dark"].writer-html5 .rst-content #convenience-constructors dl.py.function > dt.sig.sig-object.py .sig-param .o .pre,
+html[data-theme="dark"].writer-html5 .rst-content #convenience-constructors dl.py.function > dt.sig.sig-object.py .default_value .pre {
+    color: #f1f3f5 !important;
+}
+
+/* Keep the Methods page function signatures readable as well. */
+html[data-theme="dark"].writer-html5 .rst-content #methods dl.py.function > dt.sig.sig-object.py {
+    color: #d1d5db !important;
+}
+
+html[data-theme="dark"].writer-html5 .rst-content #methods dl.py.function > dt.sig.sig-object.py .sig-name .pre {
+    color: #8bb8df !important;
+}
+
+html[data-theme="dark"].writer-html5 .rst-content #methods dl.py.function > dt.sig.sig-object.py .sig-prename .pre,
+html[data-theme="dark"].writer-html5 .rst-content #methods dl.py.function > dt.sig.sig-object.py .sig-param .n .pre,
+html[data-theme="dark"].writer-html5 .rst-content #methods dl.py.function > dt.sig.sig-object.py .sig-param .o .pre,
+html[data-theme="dark"].writer-html5 .rst-content #methods dl.py.function > dt.sig.sig-object.py .default_value .pre {
+    color: #f1f3f5 !important;
+}
+
 html[data-theme="dark"] .wy-side-nav-search img.logo {
     content: url("../logo-dark.svg");
 }

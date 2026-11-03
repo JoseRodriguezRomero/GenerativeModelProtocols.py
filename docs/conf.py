@@ -32,6 +32,7 @@ bibtex_default_style = "unsrt"
 bibtex_reference_style = "label"
 autosummary_generate = True
 autodoc_typehints = "description"
+autodoc_typehints_description_target = "documented_params"
 autodoc_member_order = "bysource"
 autodoc_mock_imports = ["juliacall"]
 templates_path = ["_templates"]

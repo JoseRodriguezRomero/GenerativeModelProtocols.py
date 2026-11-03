@@ -4,6 +4,15 @@ from .abstract_generative_model import AbstractGenerativeModel
 
 
 class NormalizingFlow(AbstractGenerativeModel):
+    """
+    A structure containing the general parameters needed to evaluate and train a 
+    Continuous Normalizing Flow (CNF). Once trained, it can be used a generative 
+    model.
+
+    Attributes:
+        velocity_field (`Chain`): The velocity field of the normalizing flow.
+        _jl_model: The underlying Julia model instance. User should not modify this directly.
+    """
     __module__ = "GenerativeModelProtocols"
     __slots__ = ("_jl_model",)
 
@@ -25,6 +34,16 @@ class NormalizingFlow(AbstractGenerativeModel):
 
 
 def default_normalizing_flow(dimensions: int):
+    """
+    Creates a default Continuous Normalizing Flow (CNF) with the specified 
+    dimensions.
+
+    Args:
+        dimensions (`int`): The number of dimensions of the data.
+
+    Returns:
+        `NormalizingFlow`: The default CNF instance.
+    """
     _jl_model = jl.seval(f"GenerativeModelProtocols.NormalizingFlow({dimensions})")
     return NormalizingFlow(_jl_model = _jl_model)
 
