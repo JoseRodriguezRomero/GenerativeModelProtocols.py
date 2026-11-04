@@ -35,10 +35,36 @@ write_serialized = jl.seval(
 
 with open(sys.argv[1], "rb") as stream:
     kwargs = pickle.load(stream)
+
 device = kwargs.get("device")
 if device is not None:
     if "reactant" in device:
-        jl.seval('using Reactant')
+        jl.seval("""
+            using Logging
+
+            struct JAXWarningFilter <: Logging.AbstractLogger
+                logger::Logging.AbstractLogger
+            end
+
+            Logging.min_enabled_level(l::JAXWarningFilter) = Logging.min_enabled_level(l.logger)
+            Logging.shouldlog(l::JAXWarningFilter, args...) = Logging.shouldlog(l.logger, args...)
+            Logging.catch_exceptions(l::JAXWarningFilter) = Logging.catch_exceptions(l.logger)
+
+            function Logging.handle_message(l::JAXWarningFilter, level, message, mod, group, id, file, line; kwargs...)
+                if !occursin("Failed to import jax", string(message))
+                    Logging.handle_message(l.logger, level, message, mod, group, id, file, line; kwargs...)
+                end
+            end
+
+            let logger = global_logger()
+                global_logger(JAXWarningFilter(logger))
+                try
+                    using Reactant
+                finally
+                    global_logger(logger)
+                end
+            end
+        """)
 
     if device == "cpu":
         kwargs["device"] = jl.cpu_device()
@@ -53,6 +79,7 @@ if device is not None:
         kwargs["device"] = jl.seval("reactant_device()")
     else:
         raise ValueError(f"Unsupported device selection: {device!r}")
+
 protocol = read_serialized(sys.argv[2])
 train_log = jl.seval("train!")(protocol, **kwargs)
 write_serialized(sys.argv[3], (protocol, train_log))
