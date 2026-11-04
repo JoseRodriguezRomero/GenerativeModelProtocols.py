@@ -3,7 +3,8 @@ import numpy as np
 import generative_model_protocols as gen_prot
 
 from auxiliary_tests import print_model_test_assert
-from auxiliary_tests import model_train_test
+from auxiliary_tests import model_train_test_cpu
+from auxiliary_tests import model_train_test_reactant
 
 
 def default_velocity_field_test():
@@ -47,7 +48,8 @@ class TestNormalizingFlow(unittest.TestCase):
             model._jl_model = 0
 
     def test_train(self):
-        model_train_test(self, gen_prot.default_normalizing_flow(2))
+        model_train_test_cpu(self, gen_prot.default_normalizing_flow(2))
+        model_train_test_reactant(self, gen_prot.default_normalizing_flow(2))
 
     def test_data_synthetization(self):
         data_dims = 2

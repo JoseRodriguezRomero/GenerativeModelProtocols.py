@@ -35,6 +35,24 @@ write_serialized = jl.seval(
 
 with open(sys.argv[1], "rb") as stream:
     kwargs = pickle.load(stream)
+device = kwargs.get("device")
+if device is not None:
+    if "reactant" in device:
+        jl.seval('using Reactant')
+
+    if device == "cpu":
+        kwargs["device"] = jl.cpu_device()
+    elif device == "reactant_cpu":
+        jl.seval('Reactant.set_default_backend("cpu")')
+        kwargs["device"] = jl.seval("reactant_device()")
+    elif device == "reactant_gpu":
+        jl.seval('Reactant.set_default_backend("gpu")')
+        kwargs["device"] = jl.seval("reactant_device()")
+    elif device == "reactant_tpu":
+        jl.seval('Reactant.set_default_backend("tpu")')
+        kwargs["device"] = jl.seval("reactant_device()")
+    else:
+        raise ValueError(f"Unsupported device selection: {device!r}")
 protocol = read_serialized(sys.argv[2])
 train_log = jl.seval("train!")(protocol, **kwargs)
 write_serialized(sys.argv[3], (protocol, train_log))
@@ -149,6 +167,9 @@ class GenerativeModelProtocol:
                 )
             else:
                 kwargs['optimiser'] = kwargs['optimiser']._jl_optimiser
+
+        if 'device' in kwargs:
+            kwargs['device'] = kwargs['device'].value
 
         clean_kwargs = {
             key_map.get(k, k): v

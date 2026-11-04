@@ -5,12 +5,6 @@
 
 .. autofunction:: generative_model_protocols.load_reactant
 
-.. autofunction:: generative_model_protocols.load_reactant_cpu
-
-.. autofunction:: generative_model_protocols.load_reactant_gpu
-
-.. autofunction:: generative_model_protocols.load_reactant_cuda
-
 .. autofunction:: generative_model_protocols.load_distribution_distance_extension
 
 .. autofunction:: generative_model_protocols.load_save_load_exension

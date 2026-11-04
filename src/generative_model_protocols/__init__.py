@@ -6,6 +6,7 @@ jl.seval("using Lux")
 
 from .auxiliary.optimisers import *
 from .auxiliary.lux import *
+from .auxiliary.devices import *
 
 from .generative_model_protocol import *
 from .auxiliary.tabular_denoiser import *
@@ -22,38 +23,7 @@ def load_differential_equations():
     Loads the `DifferentialEquations.jl` package in Julia.
     """
 
-    jl.seval("using DifferentialEquations")
-
-
-def load_reactant():
-    """
-    Loads the `Reactant.jl` package in Julia.
-    """
-    jl.seval("using Reactant")
-
-
-def load_reactant_cpu():
-    """
-    Loads the `Reactant.jl` package in Julia and sets the backend to CPU.
-    """
-    load_reactant()
-    jl.seval("Reactant.set_backend(\"cpu\")")
-
-
-def load_reactant_gpu():
-    """
-    Loads the `Reactant.jl` package in Julia and sets the backend to GPU.
-    """
-    load_reactant()
-    jl.seval("Reactant.set_backend(\"gpu\")")
-
-
-def load_reactant_cuda():
-    """
-    Loads the `Reactant.jl` package in Julia and sets the backend to CUDA.
-    """
-    load_reactant()
-    jl.seval("Reactant.set_backend(\"cuda\")")
+    jl.seval('using DifferentialEquations')
 
 
 def load_distribution_distance_extension():
@@ -61,9 +31,9 @@ def load_distribution_distance_extension():
     Loads the distribution distance extension packages in Julia, including 
     `Tulip.jl`, `Distances.jl`, and `OptimalTransport.jl`.
     """
-    jl.seval("using Tulip")
-    jl.seval("using Distances")
-    jl.seval("using OptimalTransport")
+    jl.seval('using Tulip')
+    jl.seval('using Distances')
+    jl.seval('using OptimalTransport')
 
 
 def load_save_load_exension():
@@ -87,6 +57,7 @@ __all__ = [
 
     # other auxiliary
     "TrainingDataNormalization",
+    "Device",
 
     # convenience constructors
     "default_variational_autoencoder", 
@@ -98,10 +69,6 @@ __all__ = [
 
     # dependency loaders
     "load_differential_equations",
-    "load_reactant",
-    "load_reactant_cpu",
-    "load_reactant_gpu",
-    "load_reactant_cuda",
     "load_distribution_distance_extension",
     "load_save_load_exension",
 
