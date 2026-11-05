@@ -27,7 +27,7 @@ def print_model_test_assert(env, model):
     _print_model_test_assert(env, protocol)
 
 
-def model_train_test(env, model, **kwargs):
+def model_train_test(env, model, device, **kwargs):
     training_data = make_data(50)
     protocol = gen_prot.GenerativeModelProtocol(
         model         = model,
@@ -35,6 +35,21 @@ def model_train_test(env, model, **kwargs):
     )
     optimiser = gen_prot.default_optimiser(protocol)
     env.assertIsInstance(protocol, gen_prot.GenerativeModelProtocol)
-    train_log = protocol.train(epochs = 20, optimiser = optimiser, **kwargs)
+    train_log = protocol.train(
+        epochs    = 20, 
+        optimiser = optimiser,
+        device    = device,
+        **kwargs
+    )
     env.assertIsNotNone(train_log)
+
+
+def model_train_test_cpu(env, model, **kwargs):
+    print("Testing model on CPU")
+    model_train_test(env, model, device = gen_prot.Device.CPU, **kwargs)
+
+
+def model_train_test_reactant(env, model, **kwargs):
+    print("Testing model on Reactant (CPU backend)")
+    model_train_test(env, model, device = gen_prot.Device.REACTANT_CPU, **kwargs)
 
