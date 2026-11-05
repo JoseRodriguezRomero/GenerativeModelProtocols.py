@@ -19,6 +19,14 @@ class AbstractOptimiser:
 
 
 class Descent(AbstractOptimiser):
+    """
+    Classic gradient descent optimiser with learning rate `η`. For each
+    parameter `p` and its gradient `dp`, this runs `p -= η*dp`.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -42,6 +50,14 @@ class Descent(AbstractOptimiser):
 
 
 class Momentum(AbstractOptimiser):
+    """
+    Gradient descent optimizer with learning rate `η` and momentum `ρ`.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        rho (`float`): Momentum. Controls the acceleration of gradient descent in the prominent direction, in effect dampening oscillations.
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -71,6 +87,14 @@ class Momentum(AbstractOptimiser):
 
 
 class Nesterov(AbstractOptimiser):
+    """
+    Gradient descent optimizer with learning rate `η` and Nesterov momentum `ρ`.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        rho (`float`): Nesterov momentum. Controls the acceleration of gradient descent in the prominent direction, in effect dampening oscillations.
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -100,6 +124,16 @@ class Nesterov(AbstractOptimiser):
 
 
 class Rprop(AbstractOptimiser):
+    """
+    Optimizer using the Rprop algorithm. A full-batch learning algorithm that
+    depends only on the sign of the gradient.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        ell (`tuple[float, float]`): Scaling factors. Multiplicative increase and decrease factors.
+        gamma (`tuple[float, float]`): Step sizes. Minimal and maximal allowed step sizes.
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -135,6 +169,20 @@ class Rprop(AbstractOptimiser):
 
 
 class RMSProp(AbstractOptimiser):
+    """
+    Optimizer using the RMSProp algorithm. Often a good choice for recurrent
+    networks. Parameters other than learning rate generally don't need tuning.
+
+    Centred RMSProp is a variant which normalises gradients by an estimate their
+    variance, instead of their second moment.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        rho (`float`): Momentum. Controls the acceleration of gradient descent in the prominent direction, in effect dampening oscillations.
+        epsilon (`float`): Constant to prevent division by zero (no need to change default)
+        centred (`bool`): Keyword centred (or centered). Indicates whether to use centred variant of the algorithm.
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -176,6 +224,15 @@ class RMSProp(AbstractOptimiser):
 
 
 class Adam(AbstractOptimiser):
+    """
+    Adam optimiser.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        beta (`tuple[float, float]`): Decay of momentums. Exponential decay for the first (β1) and the second (β2) momentum estimate.
+        epsilon (`float`): Constant to prevent division by zero (no need to change default)
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -211,6 +268,15 @@ class Adam(AbstractOptimiser):
 
 
 class RAdam(AbstractOptimiser):
+    """
+    Rectified Adam optimizer.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        beta (`tuple[float, float]`): Decay of momentums. Exponential decay for the first (β1) and the second (β2) momentum estimate.
+        epsilon (`float`): Constant to prevent division by zero (no need to change default)
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -246,6 +312,15 @@ class RAdam(AbstractOptimiser):
 
 
 class AdaMax(AbstractOptimiser):
+    """
+    AdaMax is a variant of Adam based on the ∞-norm.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        beta (`tuple[float, float]`): Decay of momentums. Exponential decay for the first (β1) and the second (β2) momentum estimate.
+        epsilon (`float`): Constant to prevent division by zero (no need to change default)
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -281,6 +356,16 @@ class AdaMax(AbstractOptimiser):
 
 
 class OAdam(AbstractOptimiser):
+    """
+    OAdam (Optimistic Adam) is a variant of Adam adding an "optimistic" term
+    suitable for adversarial training.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        beta (`tuple[float, float]`): Decay of momentums. Exponential decay for the first (β1) and the second (β2) momentum estimate.
+        epsilon (`float`): Constant to prevent division by zero (no need to change default)
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -316,6 +401,15 @@ class OAdam(AbstractOptimiser):
 
 
 class AdaGrad(AbstractOptimiser):
+    """
+    AdaGrad optimizer. It has parameter specific learning rates based on how
+    frequently it is updated. Parameters don't need tuning.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        epsilon (`float`): Constant to prevent division by zero (no need to change default)
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -328,7 +422,7 @@ class AdaGrad(AbstractOptimiser):
         if _jl_optimiser is not None:
             self._jl_optimiser = _jl_optimiser
         else:
-            self._jl_optimiser = jl.OAdam(
+            self._jl_optimiser = jl.AdaGrad(
                 **{
                     "eta": eta,
                     "epsilon": epsilon
@@ -345,6 +439,15 @@ class AdaGrad(AbstractOptimiser):
 
 
 class AdaDelta(AbstractOptimiser):
+    """
+    AdaDelta is a version of AdaGrad adapting its learning rate based on a
+    window of past gradient updates. Parameters don't need tuning.
+
+    Attributes:
+            rho (`float`): Factor by which the gradient is decayed at each time step.
+            epsilon (`float`): Constant to prevent division by zero (no need to change default)
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -374,6 +477,15 @@ class AdaDelta(AbstractOptimiser):
 
 
 class AMSGrad(AbstractOptimiser):
+    """
+    The AMSGrad version of the Adam optimiser. Parameters don't need tuning.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        beta (`tuple[float, float]`): Decay of momentums. Exponential decay for the first (β1) and the second (β2) momentum estimate.
+        epsilon (`float`): Constant to prevent division by zero (no need to change default)
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -409,6 +521,15 @@ class AMSGrad(AbstractOptimiser):
 
 
 class NAdam(AbstractOptimiser):
+    """
+    NAdam is a Nesterov variant of Adam. Parameters don't need tuning.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        beta (`tuple[float, float]`): Decay of momentums. Exponential decay for the first (β1) and the second (β2) momentum estimate.
+        epsilon (`float`): Constant to prevent division by zero (no need to change default)
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -444,6 +565,18 @@ class NAdam(AbstractOptimiser):
 
 
 class AdamW(AbstractOptimiser):
+    """
+    AdamW is a variant of Adam fixing (as in repairing) its weight decay
+    regularization. Implemented as an OptimiserChain of Adam and WeightDecay`.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        beta (`tuple[float, float]`): Decay of momentums. Exponential decay for the first (β1) and the second (β2) momentum estimate.
+        lambda_ (`float`): Weight decay. Controls the strength of L2 regularisation.
+        epsilon (`float`): Constant to prevent division by zero (no need to change default)
+        couple (`bool`): If true, the weight decay is coupled with the learning rate, as in pytorch's `AdamW`. This corresponds to an update of the form `x = x - η * (dx + λ * x)`, where dx is the update from Adam with learning rate `1`. If false, the weight decay is decoupled from the learning rate, in the spirit of the original paper. This corresponds to an update of the form `x = x - η * dx - λ * x`. Default is `true`.
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -491,6 +624,15 @@ class AdamW(AbstractOptimiser):
 
 
 class AdaBelief(AbstractOptimiser):
+    """
+    The AdaBelief optimiser is a variant of the well-known Adam optimiser.
+
+    Attributes:
+        eta (`float`): Learning rate. Amount by which gradients are discounted before updating the weights.
+        beta (`tuple[float, float]`): Decay of momentums. Exponential decay for the first (β1) and the second (β2) momentum estimate.
+        epsilon (`float`): Constant to prevent division by zero (no need to change default)
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -526,6 +668,14 @@ class AdaBelief(AbstractOptimiser):
 
 
 class Lion(AbstractOptimiser):
+    """
+    Lion optimiser.
+
+    Attributes:
+        eta (`float`): Learning rate. Magnitude by which gradients are updating the weights.
+        beta (`tuple[float, float]`): Decay of momentums. Exponential decay for the first (β1) and the second (β2) momentum estimate.
+    """
+
     __module__ = "GenerativeModelProtocols.Auxiliary.Optimisers"
     __slots__ = ("_jl_optimiser",)
 
@@ -572,4 +722,3 @@ __all__ = [
     "AdaBelief",
     "Lion"
 ]
-

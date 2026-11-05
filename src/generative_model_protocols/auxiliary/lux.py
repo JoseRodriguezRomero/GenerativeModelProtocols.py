@@ -7,6 +7,17 @@ class ActivationFunction(Enum):
     """
     An enumeration of activation functions available for use in neural network 
     layers.
+
+    Attributes:
+        RELU
+        GELU
+        TANH
+        SIGMOID
+        SOFTMAX
+        LEAKYRELU
+        ELU
+        SWISH
+        IDENTITY
     """
 
     RELU       = "relu"

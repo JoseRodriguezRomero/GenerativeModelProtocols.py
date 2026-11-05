@@ -50,6 +50,7 @@ The currently built-in generative model architectures are:
 api/classes
 api/methods
 api/enums
+api/optimisers
 api/convenience_constructors
 ```
 
