@@ -7,7 +7,6 @@ from threading import Lock
 import numpy as np
 from enum import Enum
 from juliacall import Main as jl
-from .auxiliary.capture_julia_display import capture_julia_display
 
 from .abstract_generative_model import *
 from .variational_autoencoder import *
@@ -17,6 +16,8 @@ from .diffusion_model import *
 from .normalizing_flow import *
 
 from .auxiliary.optimisers import *
+
+from .auxiliary.capture_julia_display import *
 
 
 _TRAIN_LOCK = Lock()
@@ -131,17 +132,22 @@ class GenerativeModelProtocol:
 
     def __init__(
             self, 
-            model: AbstractGenerativeModel, 
+            model: AbstractGenerativeModel = None, 
             training_data: np.ndarray = np.zeros((0, 0)),
-            normalize_data = TrainingDataNormalization.HYBRID_NORMALIZATION
+            normalize_data = TrainingDataNormalization.HYBRID_NORMALIZATION,
+            _jl_protocol = None
         ):
-        if isinstance(normalize_data, TrainingDataNormalization):
-            normalize_data = normalize_data.value
-        self._jl_protocol = jl.GenerativeModelProtocol(
-            model._jl_model,
-            jl.Matrix(training_data),
-            normalize_data = normalize_data
-        )
+        if _jl_protocol is not None:
+            self._jl_protocol = _jl_protocol
+        else:
+            if isinstance(normalize_data, TrainingDataNormalization):
+                normalize_data = normalize_data.value
+            
+            self._jl_protocol = jl.GenerativeModelProtocol(
+                model._jl_model,
+                jl.Matrix(training_data),
+                normalize_data = normalize_data
+            )
 
     def __setattr__(self, name, value):
         if name == "_jl_protocol" and hasattr(self, "_jl_protocol"):
@@ -313,6 +319,13 @@ def _get_jl_optimiser_struct(_jl_optimiser):
 
 
 def default_optimiser(protocol: GenerativeModelProtocol):
+    """
+    Returns the default optimiser for a given generative model protocol.
+    
+    Arguments:
+        protocol (`GenerativeModelProtocol`): The generative model protocol for which to get the default optimiser.
+    """
+
     _jl_optimiser = jl.GenerativeModelProtocols.default_optimiser(protocol._jl_protocol)
 
     if isinstance(_jl_optimiser, tuple):
@@ -321,8 +334,89 @@ def default_optimiser(protocol: GenerativeModelProtocol):
         return _get_jl_optimiser_struct(_jl_optimiser)
 
 
+def _default_main_group_name() -> str:
+    return jl.seval("GenerativeModelProtocols.@default_main_group_name")
+
+
+def _default_metadata_group_name() -> str:
+    return jl.seval("GenerativeModelProtocols.@default_metadata_group_name")
+
+
+def _default_generative_model_group_name() -> str:
+    return jl.seval("GenerativeModelProtocols.@default_generative_model_group_name")
+
+
+def save(
+        protocol: GenerativeModelProtocol, 
+        file_name: str,
+        main_group_name : str = _default_main_group_name(),
+        metadata_group_name : str = _default_metadata_group_name(),
+        generative_model_group_name : str = _default_generative_model_group_name()
+    ):
+    """
+    Saves a generative model protocol to a file. The file will be saved as an 
+    HDF5 file.
+
+    Arguments:
+        protocol (`GenerativeModelProtocol`): The generative model protocol to save.
+        file_name (`str`): The name of the file where the protocol will be saved.
+        main_group_name (`str`, optional): The name of the main group in the HDF5 file.
+        metadata_group_name (`str`, optional): The name of the metadata group in the HDF5 file.
+        generative_model_group_name (`str`, optional): The name of the generative model group in the HDF5 file.
+    """
+
+    jl.save(
+        file_name, 
+        protocol._jl_protocol,
+        main_group_name = main_group_name,
+        metadata_group_name = metadata_group_name,
+        generative_model_group_name = generative_model_group_name
+    )
+
+
+def load(
+        file_name: str, 
+        training_data: np.ndarray = np.zeros((0, 0)),
+        main_group_name : str = _default_main_group_name(),
+        metadata_group_name : str = _default_metadata_group_name(),
+        generative_model_group_name : str = _default_generative_model_group_name()
+    ) -> GenerativeModelProtocol:
+    """
+    Loads a generative model protocol from a file. The file must be an HDF5 
+    file.
+
+    Arguments:
+        file_name (`str`): The name of the file from which to load the protocol.
+        training_data (`np.ndarray`, optional): The training data to use for the loaded protocol.
+        main_group_name (`str`, optional): The name of the main group in the HDF5 file.
+        metadata_group_name (`str`, optional): The name of the metadata group in the HDF5 file.
+        generative_model_group_name (`str`, optional): The name of the generative model group in the HDF5 file.
+    """
+
+    _jl_protocol = None
+    if training_data is not None:
+        _jl_protocol = jl.GenerativeModelProtocol(
+            file_name,
+            main_group_name = main_group_name,
+            metadata_group_name = metadata_group_name,
+            generative_model_group_name = generative_model_group_name
+        )
+    else:
+        _jl_protocol = jl.GenerativeModelProtocol(
+            file_name, 
+            jl.Matrix(training_data),
+            main_group_name = main_group_name,
+            metadata_group_name = metadata_group_name,
+            generative_model_group_name = generative_model_group_name
+        )
+    
+    return GenerativeModelProtocol(_jl_protocol = _jl_protocol)
+
+
 __all__ = [
     "TrainingDataNormalization",
     "GenerativeModelProtocol",
-    "default_optimiser"
+    "default_optimiser",
+    "save",
+    "load"
 ]

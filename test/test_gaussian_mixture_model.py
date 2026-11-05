@@ -5,6 +5,7 @@ import generative_model_protocols as gen_prot
 from auxiliary_tests import print_model_test_assert
 from auxiliary_tests import model_train_test_cpu
 from auxiliary_tests import model_train_test_reactant
+from auxiliary_tests import save_load_protocol_test
 
 
 def default_gaussian_mixture_model_test():
@@ -57,4 +58,8 @@ class TestGaussianMixtureModel(unittest.TestCase):
         protocol = gen_prot.GenerativeModelProtocol(model = model, normalize_data = False)
 
         self.assertIsInstance(protocol(20), np.ndarray)
+
+    def test_save_load(self):
+        model = gen_prot.default_gaussian_mixture_model(2, 20)
+        save_load_protocol_test(self, model, "test_gaussian_mixture_model.h5")
 
