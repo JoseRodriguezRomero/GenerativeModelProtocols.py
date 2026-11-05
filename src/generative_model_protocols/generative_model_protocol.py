@@ -98,6 +98,11 @@ def _julia_serialization_functions():
 class TrainingDataNormalization(Enum):
     """
     An enumeration of training data normalization options.
+
+    Attributes:
+        FULL_NORMALIZATION
+        NO_NORMALIZATION
+        HYBRID_NORMALIZATION
     """
     
     FULL_NORMALIZATION   = jl.GenerativeModelProtocols.full_normalization
