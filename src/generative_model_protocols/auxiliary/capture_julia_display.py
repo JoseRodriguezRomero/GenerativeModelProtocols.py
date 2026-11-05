@@ -28,3 +28,9 @@ _capture_display = jl.seval("""
 
 def capture_julia_display(jl_obj) -> str:
     return str(_capture_display(jl_obj)).rstrip()
+
+
+__all__ = [
+    "capture_julia_display"
+]
+

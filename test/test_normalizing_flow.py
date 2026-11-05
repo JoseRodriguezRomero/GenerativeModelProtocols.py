@@ -5,6 +5,7 @@ import generative_model_protocols as gen_prot
 from auxiliary_tests import print_model_test_assert
 from auxiliary_tests import model_train_test_cpu
 from auxiliary_tests import model_train_test_reactant
+from auxiliary_tests import save_load_protocol_test
 
 
 def default_velocity_field_test():
@@ -66,4 +67,8 @@ class TestNormalizingFlow(unittest.TestCase):
         self.assertIsInstance(protocol(20), np.ndarray)
         self.assertTrue(x_test.shape == protocol.decode(z_test).shape)
         self.assertTrue(z_test.shape == protocol.encode(x_test).shape)
+
+    def test_save_load(self):
+        model = gen_prot.default_normalizing_flow(2)
+        save_load_protocol_test(self, model, "test_normalizing_flow.h5")
 
