@@ -56,7 +56,7 @@ class TestNormalizingFlow(unittest.TestCase):
         data_dims = 2
         latent_dims = data_dims
 
-        gen_prot.load_differential_equations()
+        gen_prot.load_differential_equations_extension()
 
         model = gen_prot.default_normalizing_flow(data_dims)
         protocol = gen_prot.GenerativeModelProtocol(model = model, normalize_data = False)

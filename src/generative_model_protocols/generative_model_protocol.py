@@ -6,6 +6,7 @@ import tempfile
 from threading import Lock
 import numpy as np
 from enum import Enum
+from typing import Any
 from juliacall import Main as jl
 
 from .abstract_generative_model import *
@@ -21,6 +22,16 @@ from .auxiliary.capture_julia_display import *
 
 
 _TRAIN_LOCK = Lock()
+_julia_metadata_value = jl.seval("""
+    value -> begin
+        if value isa AbstractVector
+            isempty(value) && throw(ArgumentError("empty metadata vectors need an explicit element type"))
+            collect(promote(value...))
+        else
+            value
+        end
+    end
+""")
 
 _TRAIN_WORKER = r'''
 import pickle
@@ -351,7 +362,8 @@ def save(
         file_name: str,
         main_group_name : str = _default_main_group_name(),
         metadata_group_name : str = _default_metadata_group_name(),
-        generative_model_group_name : str = _default_generative_model_group_name()
+        generative_model_group_name : str = _default_generative_model_group_name(),
+        metadata : dict[str, Any] | None = None
     ):
     """
     Saves a generative model protocol to a file. The file will be saved as an 
@@ -363,15 +375,30 @@ def save(
         main_group_name (`str`, optional): The name of the main group in the HDF5 file.
         metadata_group_name (`str`, optional): The name of the metadata group in the HDF5 file.
         generative_model_group_name (`str`, optional): The name of the generative model group in the HDF5 file.
+        metadata (`dict[str, Any]`, optional): The metadata to save with the protocol.
     """
 
-    jl.save(
+    julia_metadata = jl.seval("Dict{String, Any}()")
+    for key, value in (metadata or {}).items():
+        julia_metadata[key] = _julia_metadata_value(value)
+
+    jl.GenerativeModelProtocols.save(
         file_name, 
         protocol._jl_protocol,
         main_group_name = main_group_name,
         metadata_group_name = metadata_group_name,
-        generative_model_group_name = generative_model_group_name
+        generative_model_group_name = generative_model_group_name,
+        metadata = julia_metadata
     )
+
+
+def _julia_value_to_python(value: Any) -> Any:
+    if jl.isa(value, jl.AbstractArray):
+        python_values = []
+        for item in value:
+            python_values.append(_julia_value_to_python(item))
+        return python_values
+    return value
 
 
 def load(
@@ -380,7 +407,7 @@ def load(
         main_group_name : str = _default_main_group_name(),
         metadata_group_name : str = _default_metadata_group_name(),
         generative_model_group_name : str = _default_generative_model_group_name()
-    ) -> GenerativeModelProtocol:
+    ) -> tuple[GenerativeModelProtocol, dict[str, Any]]:
     """
     Loads a generative model protocol from a file. The file must be an HDF5 
     file.
@@ -391,26 +418,35 @@ def load(
         main_group_name (`str`, optional): The name of the main group in the HDF5 file.
         metadata_group_name (`str`, optional): The name of the metadata group in the HDF5 file.
         generative_model_group_name (`str`, optional): The name of the generative model group in the HDF5 file.
+
+    Returns:
+        tuple: The loaded protocol and its metadata as a Python dictionary with string keys.
     """
 
-    _jl_protocol = None
+    _jl_protocol, metadata = None, None
     if training_data is not None:
-        _jl_protocol = jl.GenerativeModelProtocol(
+        _jl_protocol, metadata = jl.GenerativeModelProtocols.load(
             file_name,
             main_group_name = main_group_name,
             metadata_group_name = metadata_group_name,
             generative_model_group_name = generative_model_group_name
         )
     else:
-        _jl_protocol = jl.GenerativeModelProtocol(
+        _jl_protocol, metadata = jl.GenerativeModelProtocols.load(
             file_name, 
             jl.Matrix(training_data),
             main_group_name = main_group_name,
             metadata_group_name = metadata_group_name,
             generative_model_group_name = generative_model_group_name
         )
-    
-    return GenerativeModelProtocol(_jl_protocol = _jl_protocol)
+
+    python_metadata: dict[str, Any] = {}
+    if metadata is not None:
+        for key in jl.keys(metadata):
+            python_key = str(jl.string(key))
+            python_metadata[python_key] = _julia_value_to_python(jl.getproperty(metadata, key))
+
+    return GenerativeModelProtocol(_jl_protocol = _jl_protocol), python_metadata
 
 
 __all__ = [

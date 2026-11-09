@@ -62,14 +62,18 @@ def save_load_protocol_test(env, model, file_name):
         training_data = training_data
     )
 
-    gen_prot.load_save_load_exension()
-    gen_prot.save(protocol, file_name)
+    metadata = {"a": 1, "b": "test", "c": [1.0, 2.0]}
 
-    loaded_protocol = gen_prot.load(file_name, training_data = training_data)
+    gen_prot.load_save_load_extension()
+    gen_prot.save(protocol, file_name, metadata = metadata)
+
+    loaded_protocol, loaded_metadata = gen_prot.load(file_name, training_data = training_data)
+    env.assertEqual(loaded_metadata, metadata)
     env.assertIsInstance(loaded_protocol, gen_prot.GenerativeModelProtocol)
     env.assertTrue(type(protocol.model) == type(loaded_protocol.model))
 
-    loaded_protocol = gen_prot.load(file_name)
+    loaded_protocol, loaded_metadata = gen_prot.load(file_name)
+    env.assertEqual(loaded_metadata, metadata)
     env.assertIsInstance(loaded_protocol, gen_prot.GenerativeModelProtocol)
     env.assertTrue(type(protocol.model) == type(loaded_protocol.model))
 
