@@ -18,7 +18,7 @@ from .normalizing_flow import *
 from .diffusion_model import *
 
 
-def load_differential_equations():
+def load_differential_equations_extension():
     """
     Loads the `DifferentialEquations.jl` package in Julia.
     """
@@ -36,7 +36,7 @@ def load_distribution_distance_extension():
     jl.seval('using OptimalTransport')
 
 
-def load_save_load_exension():
+def load_save_load_extension():
     """
     Loads the save and load extension packages in Julia, including `FileIO.jl` 
     and `HDF5.jl`.
@@ -68,9 +68,9 @@ __all__ = [
     "default_tabular_denoiser",
 
     # dependency loaders
-    "load_differential_equations",
+    "load_differential_equations_extension",
     "load_distribution_distance_extension",
-    "load_save_load_exension",
+    "load_save_load_extension",
 
     # lux components
     "Dense",
