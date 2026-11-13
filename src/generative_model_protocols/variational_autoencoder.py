@@ -1,5 +1,5 @@
 from juliacall import Main as jl
-from .auxiliary.lux import Chain
+from .auxiliary.lux import ActivationFunction, Chain
 from .abstract_generative_model import AbstractGenerativeModel
 
 
@@ -49,7 +49,10 @@ class VariationalAutoencoder(AbstractGenerativeModel):
 def default_variational_autoencoder(
         dimensions: int, 
         latent_dimension: int = 1, 
-        latent_layers: int = 1
+        latent_layers: int = 1,
+        hidden_layers: int = 5,
+        hidden_layer_size: int = 32,
+        activation_function: ActivationFunction = ActivationFunction.SWISH
     ):
     """
     Creates a default Variational Autoencoder (VAE) with the specified 
@@ -59,11 +62,21 @@ def default_variational_autoencoder(
         dimensions (`int`): The number of dimensions of the data.
         latent_dimension (`int`, optional): The dimension of the latent space. Defaults to 1.
         latent_layers (`int`, optional): The number of layers in the latent space. Defaults to 1.
+        hidden_layers (`int`, optional): The number of hidden layers in each of the encoders and decoders. Defaults to 5.
+        hidden_layer_size (`int`, optional): The size of the hidden layers in each of the encoders and decoders. Defaults to 32.
+        activation_function (`ActivationFunction`, optional): The activation function used by the encoders and decoders. Defaults to `ActivationFunction.SWISH`.
 
     Returns:
         `VariationalAutoencoder`: The default VAE instance.
     """
-    _jl_model = jl.seval(f"GenerativeModelProtocols.VariationalAutoencoder({dimensions}, {latent_dimension}, {latent_layers})")
+    _jl_model = jl.seval(f"GenerativeModelProtocols.VariationalAutoencoder(\
+        {dimensions},\
+        {latent_dimension},\
+        {latent_layers},\
+        hidden_layers = {hidden_layers},\
+        hidden_layer_size = {hidden_layer_size},\
+        activation_function = {activation_function.value}\
+        )")
     return VariationalAutoencoder(_jl_model = _jl_model)
 
 
