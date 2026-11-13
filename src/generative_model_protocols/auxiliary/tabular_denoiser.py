@@ -1,6 +1,10 @@
 from juliacall import Main as jl
-from .lux import Chain, Dense
+from .lux import ActivationFunction, Chain, Dense
 from .capture_julia_display import capture_julia_display
+
+
+_max_period = 10000.0
+
 
 class TabularDenoiser:
     """
@@ -28,7 +32,7 @@ class TabularDenoiser:
         residual_layers: tuple[Dense, ...] = None,
         time_projection_layers: tuple[Dense, ...] = None,
         output_projection: Dense = None,
-        max_period: float = 10000.0,
+        max_period: float = _max_period,
         _jl_denoiser = None,
     ):
         self = super().__new__(cls)
@@ -110,10 +114,12 @@ class TabularDenoiser:
 
 def default_tabular_denoiser(
     num_inputs: int,
-    hidden_layer_size: int = 64,
-    T: int = 32,
-    activation_function=jl.GenerativeModelProtocols.swish,
-    max_period: float = 10000.0,
+    T:int = 32,
+    res_net_layers:int = 3,
+    hidden_layers:int = 5,
+    hidden_layer_size:int = 32,
+    activation_function: ActivationFunction = ActivationFunction.SWISH,
+    max_period: float = _max_period,
 ):
     """
     Creates a default Tabular Denoiser with the specified number of inputs, 
@@ -122,27 +128,34 @@ def default_tabular_denoiser(
 
     Args:
         num_inputs (`int`): The number of input features.
-        hidden_layer_size (`int`, optional): The size of the hidden layers. Defaults to 64.
         T (`int`, optional): The number of time steps. Defaults to 32.
-        activation_function (callable, optional): The activation function to use. Defaults to `swish`.
-        max_period (`float`, optional): The maximum period for the time embedding. Defaults to 10000.0.
+        max_period (`float`, optional): The maximum period for the time embedding. Defaults to 10000.0 (defined by `_max_period`).
+        res_net_layers (`int`, optional): The number of residual layers. Defaults to 3.
+        hidden_layers (`int`, optional): The number of hidden layers in the time embedding mlp. Defaults to 5.
+        hidden_layer_size (`int`, optional): The size of the hidden layers. Defaults to 32.
+        activation_function (`ActivationFunction`, optional): The activation function to use. Defaults to `ActivationFunction.SWISH`.
+        max_period (`float`, optional): The maximum period for the time embedding. Defaults to 10000.0 (defined by `_max_period`).
 
     Returns:
         `TabularDenoiser`: The default Tabular Denoiser instance.
     """
 
-    _jl_denoiser = jl.GenerativeModelProtocols.TabularDenoiser(
-        num_inputs,
-        hidden_layer_size=hidden_layer_size,
-        T=T,
-        activation_function=activation_function,
-        max_period=max_period,
+    _jl_denoiser = jl.seval(f"GenerativeModelProtocols.TabularDenoiser(\
+        {num_inputs},\
+        T = {T},\
+        res_net_layers = {res_net_layers},\
+        hidden_layers = {hidden_layers},\
+        hidden_layer_size = {hidden_layer_size},\
+        activation_function = {activation_function.value},\
+        max_period = {max_period}\
+        )"
     )
     return TabularDenoiser(_jl_denoiser = _jl_denoiser)
 
 
 __all__ = [
     "TabularDenoiser",
-    "default_tabular_denoiser"
+    "default_tabular_denoiser",
+    "_max_period"
 ]
 

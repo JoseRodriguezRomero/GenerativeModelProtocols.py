@@ -2,6 +2,8 @@ import numpy as np
 from juliacall import Main as jl
 from .auxiliary.tabular_denoiser import TabularDenoiser
 from .abstract_generative_model import AbstractGenerativeModel
+from .auxiliary.tabular_denoiser import _max_period
+from .auxiliary.lux import ActivationFunction
 
 
 class DiffusionModel(AbstractGenerativeModel):
@@ -45,7 +47,12 @@ def default_diffusion_model(
         dimensions: int, 
         T: int = 5, 
         beta_start: float = 1.0E-4, 
-        beta_end: float = 0.02
+        beta_end: float = 0.02,
+        res_net_layers: int = 3,
+        hidden_layers:int = 5,
+        hidden_layer_size:int = 32,
+        activation_function: ActivationFunction = ActivationFunction.SWISH,
+        max_period: float = _max_period,
     ):
     """
     Creates a default diffusion model with the specified dimensions and noise schedule.
@@ -55,12 +62,25 @@ def default_diffusion_model(
         T (`int`, optional): The number of diffusion steps. Defaults to 5.
         beta_start (`float`, optional): The starting value of the noise schedule. Defaults to 1.0E-4.
         beta_end (`float`, optional): The ending value of the noise schedule. Defaults to 0.02.
+        res_net_layers (`int`, optional): The number of residual layers in the denoiser model. Defaults to 3.
+        hidden_layers (`int`, optional): The number of hidden layers in the time embedding mlp of the denoiser model. Defaults to 5.
+        hidden_layer_size (`int`, optional): The size of the hidden layers in the denoiser model. Defaults to 32.
+        activation_function (`ActivationFunction`, optional): The activation function used by the denoiser model. Defaults to `ActivationFunction.SWISH`.
+        max_period (`float`, optional): The maximum period for the time embedding. Defaults to 10000.0.
 
     Returns:
         `DiffusionModel`: The default diffusion model instance.
     """
 
-    _jl_model = jl.seval(f"GenerativeModelProtocols.DiffusionModel({dimensions}, {T}, {beta_start}, {beta_end})")
+    _jl_model = jl.seval(f"GenerativeModelProtocols.DiffusionModel(\
+        {dimensions}, {T}, {beta_start}, {beta_end};\
+        res_net_layers = {res_net_layers},\
+        hidden_layers = {hidden_layers},\
+        hidden_layer_size = {hidden_layer_size},\
+        activation_function = {activation_function.value},\
+        max_period = {max_period}\
+        )"
+    )
     return DiffusionModel(_jl_model = _jl_model)
 
 

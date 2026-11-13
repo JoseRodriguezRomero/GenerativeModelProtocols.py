@@ -1,6 +1,6 @@
 import numpy as np
 from juliacall import Main as jl
-from .auxiliary.lux import Chain
+from .auxiliary.lux import ActivationFunction, Chain
 from .abstract_generative_model import AbstractGenerativeModel
 
 
@@ -57,7 +57,13 @@ class GaussianMixtureModel(AbstractGenerativeModel):
         return np.asarray(self._jl_model.p)
 
 
-def default_gaussian_mixture_model(dimensions: int, k: int):
+def default_gaussian_mixture_model(
+        dimensions: int, 
+        k: int,
+        hidden_layers: int = 5,
+        hidden_layer_size: int = 32,
+        activation_function: ActivationFunction = ActivationFunction.SWISH,
+    ):
     """
     Creates a default Gaussian Mixture Model (GMM) with the specified dimensions 
     and number of components.
@@ -65,12 +71,22 @@ def default_gaussian_mixture_model(dimensions: int, k: int):
     Args:
         dimensions (`int`): The number of dimensions of the data.
         k (`int`): The number of Gaussian components.
+        hidden_layers (`int`, optional): The number of hidden layers in the predictor network. Defaults to 5.
+        hidden_layer_size (`int`, optional): The size of the hidden layers in the predictor network. Defaults to 32.
+        activation_function (`ActivationFunction`, optional): The activation function used by the predictor network. Defaults to `ActivationFunction.SWISH`.
 
     Returns:
         `GaussianMixtureModel`: The default GMM instance.
     """
 
-    _jl_model = jl.seval(f"GenerativeModelProtocols.GaussianMixtureModel({dimensions}, {k})")
+    _jl_model = jl.seval(f"GenerativeModelProtocols.GaussianMixtureModel(\
+        {dimensions},\
+        {k},\
+        hidden_layers = {hidden_layers},\
+        hidden_layer_size = {hidden_layer_size},\
+        activation_function = {activation_function.value}\
+        )"
+    )
     return GaussianMixtureModel(_jl_model = _jl_model)
 
 
