@@ -71,6 +71,7 @@ def save_load_protocol_test(env, model, file_name):
     env.assertEqual(loaded_metadata, metadata)
     env.assertIsInstance(loaded_protocol, gen_prot.GenerativeModelProtocol)
     env.assertTrue(type(protocol.model) == type(loaded_protocol.model))
+    env.assertTrue(np.allclose(protocol.training_data, loaded_protocol.training_data))
 
     loaded_protocol, loaded_metadata = gen_prot.load(file_name)
     env.assertEqual(loaded_metadata, metadata)
