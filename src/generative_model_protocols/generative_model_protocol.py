@@ -182,6 +182,10 @@ class GenerativeModelProtocol:
             raise TypeError("_jl_model is not an AbstractGenerativeModel")
 
     @property
+    def training_data(self) -> np.ndarray:
+        return np.asarray(self._jl_protocol.training_data)
+
+    @property
     def input_size(self) -> int:
         return jl.input_size(self._jl_protocol)
 
@@ -424,7 +428,7 @@ def load(
     """
 
     _jl_protocol, metadata = None, None
-    if training_data is not None:
+    if training_data is None:
         _jl_protocol, metadata = jl.GenerativeModelProtocols.load(
             file_name,
             main_group_name = main_group_name,
