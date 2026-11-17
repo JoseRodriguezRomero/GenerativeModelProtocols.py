@@ -79,6 +79,7 @@ distribution_distances/sinkhorn_distance
 :caption: Examples
 
 examples/getting_started/index
+examples/beta_annealing/beta_annealing
 examples/save_load/save_load
 ```
 
