@@ -70,3 +70,15 @@ html[data-theme="dark"].writer-html5 .rst-content #methods dl.py.function > dt.s
 html[data-theme="dark"] .wy-side-nav-search img.logo {
     content: url("../logo-dark.svg");
 }
+
+img.transparent-bg {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
