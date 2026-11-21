@@ -42,7 +42,14 @@ def model_train_test(env, model, device, **kwargs):
         device    = device,
         **kwargs
     )
-    env.assertIsNotNone(train_log)
+    env.assertIsInstance(train_log, gen_prot.TrainingLog)
+    env.assertTrue(
+        all(
+            isinstance(k, str) and isinstance(v, np.ndarray)
+            for k, v in train_log.trace.items()
+        )
+    )
+    env.assertIsInstance(train_log.elapsed, float)
 
 
 def model_train_test_cpu(env, model, **kwargs):
