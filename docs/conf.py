@@ -40,8 +40,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {
-    "navigation_depth": 1,
-    "titles_only": True,
+    "navigation_depth": 4,
+    "titles_only": False,
 }
 html_static_path = ["_static"]
 html_css_files = ["custom.css"]
@@ -49,6 +49,3 @@ html_js_files = ["system_theme.js"]
 html_logo = "assets/logo.svg"
 html_extra_path = ["assets/logo-dark.svg"]
 default_dark_mode = False
-html_theme_options = {
-    "show_nav_level": 2,
-}

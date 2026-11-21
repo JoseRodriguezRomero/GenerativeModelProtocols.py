@@ -82,3 +82,25 @@ img.transparent-bg {
     box-shadow: none !important;
     border: none !important;
 }
+
+/* Keep the project identity fixed and limit scrolling to the navigation tree. */
+.wy-side-scroll {
+    width: 300px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.wy-side-nav-search {
+    flex: 0 0 auto;
+    width: 300px;
+}
+
+.wy-side-scroll .wy-menu-vertical {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 300px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
