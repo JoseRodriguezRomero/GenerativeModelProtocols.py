@@ -95,6 +95,10 @@ img.transparent-bg {
 .wy-side-nav-search {
     flex: 0 0 auto;
     width: 300px;
+    position: relative;
+    z-index: 1;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
 .wy-side-scroll .wy-menu-vertical {
@@ -102,5 +106,9 @@ img.transparent-bg {
     min-height: 0;
     width: 300px;
     overflow-y: auto;
-    overscroll-behavior: contain;
+    overscroll-behavior-y: none;
+}
+
+.wy-nav-side {
+    overflow-y: hidden;
 }
