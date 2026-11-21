@@ -122,6 +122,37 @@ class TrainingDataNormalization(Enum):
     HYBRID_NORMALIZATION = jl.GenerativeModelProtocols.hybrid_normalization
 
 
+class TrainingLog:
+    """
+    A class representing the training log of a generative model protocol.
+
+    Attributes:
+        _jl_training_log: The underlying Julia training log instance. User should not modify this directly.
+    """
+
+    __module__ = "GenerativeModelProtocols"
+    __slots__ = ("_jl_training_log",)
+
+    def __init__(self, _jl_training_log):
+        object.__setattr__(self, "_jl_training_log", _jl_training_log)
+
+    def __setattr__(self, name, value):
+        if name == "_jl_training_log" and hasattr(self, "_jl_training_log"):
+            raise AttributeError("_jl_training_log is read-only")
+        super().__setattr__(name, value)
+
+    @property
+    def trace(self) -> dict[str, np.ndarray]:
+        return {
+            key: np.asarray(value)
+            for key, value in self._jl_training_log.trace.items()
+        }
+
+    @property
+    def elapsed(self) -> float:
+        return self._jl_training_log.elapsed
+
+
 class GenerativeModelProtocol:
     """
     A protocol containing a user-specified generative model, and all of its 
@@ -267,7 +298,7 @@ class GenerativeModelProtocol:
 
             trained_protocol, train_log = read_serialized(result_path)
             object.__setattr__(self, "_jl_protocol", trained_protocol)
-            return train_log
+            return TrainingLog(train_log)
 
     def __call__(self, n_samples: int = 1, **kwargs) -> np.ndarray:
         return np.asarray(self._jl_protocol(
@@ -456,6 +487,7 @@ def load(
 __all__ = [
     "TrainingDataNormalization",
     "GenerativeModelProtocol",
+    "TrainingLog",
     "default_optimiser",
     "save",
     "load"

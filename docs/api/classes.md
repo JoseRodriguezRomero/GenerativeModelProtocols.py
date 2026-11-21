@@ -3,6 +3,8 @@
 ```{eval-rst}
 .. autoclass:: generative_model_protocols.GenerativeModelProtocol
 
+.. autoclass:: generative_model_protocols.TrainingLog
+
 .. autoclass:: generative_model_protocols.VariationalAutoencoder
 
 .. autoclass:: generative_model_protocols.GenerativeAdversarialNetwork
